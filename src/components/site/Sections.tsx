@@ -8,6 +8,7 @@ import founder from "@/assets/founder.jpg";
 import gym from "@/assets/gym.jpg";
 import training from "@/assets/training.jpg";
 import online from "@/assets/online.jpg";
+import logoFull from "@/assets/logo-full.png";
 
 export function Hero() {
   return (

@@ -53,18 +53,30 @@ export default function Nav() {
         }`}
       >
         <div className="container-px flex items-center justify-between gap-6">
-          <a href="#home" className="flex items-center gap-2 shrink-0">
+          <motion.a
+            href="#home"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ scale: 1.03 }}
+            className="group flex items-center gap-3 shrink-0 rounded-md transition-[filter] duration-300 hover:[filter:drop-shadow(0_0_14px_oklch(0.78_0.13_84/0.55))]"
+            aria-label="Kaler Body Focus — Home"
+          >
             {LOGO_URL ? (
-              <img src={LOGO_URL} alt="Kaler Body Focus logo" className="h-9 sm:h-10 w-auto" />
+              <img src={LOGO_URL} alt="Kaler Body Focus logo" className="h-8 sm:h-10 lg:h-12 w-auto" />
             ) : (
-              <>
-                <span className="font-display font-black tracking-tight text-lg sm:text-xl">
-                  KALER<span className="text-gold">.</span>
-                </span>
-                <span className="hidden sm:inline text-xs uppercase tracking-[0.3em] text-muted-foreground">Body Focus</span>
-              </>
+              <img
+                src={logoMark}
+                alt="Kaler Body Focus — KBF barbell mark"
+                width={240}
+                height={80}
+                className="h-7 sm:h-9 lg:h-11 w-auto [filter:brightness(0)_invert(1)] group-hover:[filter:brightness(0)_invert(1)_sepia(1)_saturate(5)_hue-rotate(5deg)] transition-[filter] duration-300"
+              />
             )}
-          </a>
+            <span className="hidden sm:inline font-display font-bold tracking-tight text-sm lg:text-base">
+              Kaler Body Focus
+            </span>
+          </motion.a>
 
           <nav className="hidden lg:flex items-center gap-7">
             {links.map(l => (

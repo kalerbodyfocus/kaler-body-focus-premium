@@ -81,7 +81,7 @@ export default function Nav() {
 
           <div className="flex items-center gap-3">
             <a href="#inquiry" className="hidden md:inline-flex btn-gold btn-gold-hover text-sm !py-2.5 !px-5">
-              Book Consultation
+              Book Free Consultation
             </a>
             <button
               aria-label="Menu"

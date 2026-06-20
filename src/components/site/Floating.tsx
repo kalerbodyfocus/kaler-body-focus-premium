@@ -6,6 +6,8 @@ import { ArrowUp, MessageCircle } from "lucide-react";
 const WA_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ?? "919860398216";
 export const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? "pushpak.pandore@gmail.com";
 export const WHATSAPP = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi Ranjit, I'm interested in coaching.")}`;
+export const FACEBOOK_URL = (import.meta.env.VITE_FACEBOOK_URL as string | undefined) ?? "https://facebook.com/kalerbodyfocus";
+export const INSTAGRAM_URL = (import.meta.env.VITE_INSTAGRAM_URL as string | undefined) ?? "https://instagram.com/kalerbodyfocus";
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();

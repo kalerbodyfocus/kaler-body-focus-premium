@@ -554,7 +554,7 @@ export function FAQ() {
     { q: "Where are you based?", a: "Christchurch, New Zealand — for 1-on-1 personal training. Online coaching is available worldwide." },
     { q: "Do I need gym experience?", a: "No. Most clients start as complete beginners. Every plan is built for your current level." },
     { q: "How long until I see results?", a: "Most clients notice meaningful change within 4–6 weeks. Lasting transformations are built over 12+ weeks of consistency." },
-    { q: "What's included in online coaching?", a: "A fully customized training plan, nutrition guidance, weekly check-ins, WhatsApp support, and video form reviews." },
+    { q: "What's included in online coaching?", a: "Custom training programs delivered through my coaching app, personalized nutrition guidance, weekly check-ins, WhatsApp support, progress tracking, and exercise technique reviews to ensure consistent results." },
     { q: "Do you offer nutrition plans?", a: "Yes — practical, sustainable strategies that fit your lifestyle. No crash diets, ever." },
     { q: "What's the consultation like?", a: "A relaxed conversation about your goals, history, and lifestyle. Zero pressure — just clarity." },
   ];

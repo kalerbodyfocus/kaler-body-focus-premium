@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, Check, ChevronDown, ChevronRight, Dumbbell, Heart, Instagram, Mail, MapPin, MessageCircle, Trophy, Target, Brain, Activity, Apple, Shield, Clock, Star, Quote } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, ChevronRight, Dumbbell, Facebook, Heart, Instagram, Mail, MapPin, MessageCircle, Trophy, Target, Brain, Activity, Apple, Shield, Clock, Star, Quote } from "lucide-react";
 import { Reveal, Counter } from "./Reveal";
 import { WHATSAPP, CONTACT_EMAIL } from "./Floating";
 import hero from "@/assets/hero.jpg";

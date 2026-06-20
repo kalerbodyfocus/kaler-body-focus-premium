@@ -15,6 +15,8 @@ const links = [
   { href: "#contact", label: "Contact" },
 ];
 
+const LOGO_URL = (import.meta.env.VITE_LOGO_URL as string | undefined) ?? "";
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -51,10 +53,16 @@ export default function Nav() {
       >
         <div className="container-px flex items-center justify-between gap-6">
           <a href="#home" className="flex items-center gap-2 shrink-0">
-            <span className="font-display font-black tracking-tight text-lg sm:text-xl">
-              KALER<span className="text-gold">.</span>
-            </span>
-            <span className="hidden sm:inline text-xs uppercase tracking-[0.3em] text-muted-foreground">Body Focus</span>
+            {LOGO_URL ? (
+              <img src={LOGO_URL} alt="Kaler Body Focus logo" className="h-9 sm:h-10 w-auto" />
+            ) : (
+              <>
+                <span className="font-display font-black tracking-tight text-lg sm:text-xl">
+                  KALER<span className="text-gold">.</span>
+                </span>
+                <span className="hidden sm:inline text-xs uppercase tracking-[0.3em] text-muted-foreground">Body Focus</span>
+              </>
+            )}
           </a>
 
           <nav className="hidden lg:flex items-center gap-7">
@@ -73,7 +81,7 @@ export default function Nav() {
 
           <div className="flex items-center gap-3">
             <a href="#inquiry" className="hidden md:inline-flex btn-gold btn-gold-hover text-sm !py-2.5 !px-5">
-              Book Consultation
+              Book Free Consultation
             </a>
             <button
               aria-label="Menu"

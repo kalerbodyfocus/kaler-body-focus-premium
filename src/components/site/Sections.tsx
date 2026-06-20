@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, Check, ChevronDown, ChevronRight, Dumbbell, Heart, Instagram, Mail, MapPin, MessageCircle, Trophy, Target, Brain, Activity, Apple, Shield, Clock, Star, Quote } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, ChevronRight, Dumbbell, Facebook, Heart, Instagram, Mail, MapPin, MessageCircle, Trophy, Target, Brain, Activity, Apple, Shield, Clock, Star, Quote } from "lucide-react";
 import { Reveal, Counter } from "./Reveal";
-import { WHATSAPP, CONTACT_EMAIL } from "./Floating";
+import { WHATSAPP, CONTACT_EMAIL, FACEBOOK_URL, INSTAGRAM_URL } from "./Floating";
 import hero from "@/assets/hero.jpg";
 import founder from "@/assets/founder.jpg";
 import gym from "@/assets/gym.jpg";
@@ -219,7 +219,7 @@ export function Personal() {
                   </div>
                 ))}
               </div>
-              <a href="#inquiry" className="btn-gold btn-gold-hover mt-10">Book Your Consultation <ArrowRight className="w-4 h-4" /></a>
+              <a href="#inquiry" className="btn-gold btn-gold-hover mt-10">Book Free Consultation <ArrowRight className="w-4 h-4" /></a>
             </div>
           </Reveal>
           <Reveal delay={0.15}>
@@ -554,7 +554,7 @@ export function FAQ() {
     { q: "Where are you based?", a: "Christchurch, New Zealand — for 1-on-1 personal training. Online coaching is available worldwide." },
     { q: "Do I need gym experience?", a: "No. Most clients start as complete beginners. Every plan is built for your current level." },
     { q: "How long until I see results?", a: "Most clients notice meaningful change within 4–6 weeks. Lasting transformations are built over 12+ weeks of consistency." },
-    { q: "What's included in online coaching?", a: "A fully customized training plan, nutrition guidance, weekly check-ins, WhatsApp support, and video form reviews." },
+    { q: "What's included in online coaching?", a: "Custom training programs delivered through my coaching app, personalized nutrition guidance, weekly check-ins, WhatsApp support, progress tracking, and exercise technique reviews to ensure consistent results." },
     { q: "Do you offer nutrition plans?", a: "Yes — practical, sustainable strategies that fit your lifestyle. No crash diets, ever." },
     { q: "What's the consultation like?", a: "A relaxed conversation about your goals, history, and lifestyle. Zero pressure — just clarity." },
   ];
@@ -650,7 +650,8 @@ export function Contact() {
               {[
                 { i: Mail, l: "Email", v: CONTACT_EMAIL, h: `mailto:${CONTACT_EMAIL}`, ext: false },
                 { i: MessageCircle, l: "WhatsApp", v: "Chat with Ranjit directly", h: WHATSAPP, ext: true },
-                { i: Instagram, l: "Instagram", v: "@kalerbodyfocus", h: "https://instagram.com/kalerbodyfocus", ext: true },
+                { i: Instagram, l: "Instagram", v: "@kalerbodyfocus", h: INSTAGRAM_URL, ext: true },
+                { i: Facebook, l: "Facebook", v: "Kaler Body Focus", h: FACEBOOK_URL, ext: true },
                 { i: MapPin, l: "Location", v: "Christchurch, New Zealand", h: "#", ext: false },
               ].map(c => (
                 <a key={c.l} href={c.h} target={c.ext ? "_blank" : undefined} rel="noopener noreferrer"
@@ -702,7 +703,8 @@ export function Footer() {
             </p>
             <div className="mt-5 flex gap-2">
               <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><MessageCircle className="w-4 h-4" /></a>
-              <a href="https://instagram.com/kalerbodyfocus" aria-label="Instagram" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Facebook className="w-4 h-4" /></a>
               <a href={`mailto:${CONTACT_EMAIL}`} aria-label="Email" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Mail className="w-4 h-4" /></a>
             </div>
           </div>

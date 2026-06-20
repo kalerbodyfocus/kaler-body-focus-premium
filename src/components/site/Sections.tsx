@@ -698,7 +698,7 @@ export function Footer() {
       <div className="container-px">
         <div className="grid md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
-            <div className="font-display font-black text-2xl">KALER<span className="text-gold">.</span> Body Focus</div>
+            <img src={logoFull} alt="Kaler Body Focus" width={220} height={220} className="w-[180px] sm:w-[200px] lg:w-[220px] h-auto [filter:brightness(0)_invert(1)]" />
             <p className="mt-3 text-foreground/60 max-w-md text-sm">
               Premium personal training and online coaching for busy professionals. Built on evidence, accountability, and real results.
             </p>

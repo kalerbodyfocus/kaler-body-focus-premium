@@ -650,7 +650,8 @@ export function Contact() {
               {[
                 { i: Mail, l: "Email", v: CONTACT_EMAIL, h: `mailto:${CONTACT_EMAIL}`, ext: false },
                 { i: MessageCircle, l: "WhatsApp", v: "Chat with Ranjit directly", h: WHATSAPP, ext: true },
-                { i: Instagram, l: "Instagram", v: "@kalerbodyfocus", h: "https://instagram.com/kalerbodyfocus", ext: true },
+                { i: Instagram, l: "Instagram", v: "@kalerbodyfocus", h: INSTAGRAM_URL, ext: true },
+                { i: Facebook, l: "Facebook", v: "Kaler Body Focus", h: FACEBOOK_URL, ext: true },
                 { i: MapPin, l: "Location", v: "Christchurch, New Zealand", h: "#", ext: false },
               ].map(c => (
                 <a key={c.l} href={c.h} target={c.ext ? "_blank" : undefined} rel="noopener noreferrer"

@@ -219,7 +219,7 @@ export function Personal() {
                   </div>
                 ))}
               </div>
-              <a href="#inquiry" className="btn-gold btn-gold-hover mt-10">Book Your Consultation <ArrowRight className="w-4 h-4" /></a>
+              <a href="#inquiry" className="btn-gold btn-gold-hover mt-10">Book Free Consultation <ArrowRight className="w-4 h-4" /></a>
             </div>
           </Reveal>
           <Reveal delay={0.15}>

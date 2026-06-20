@@ -703,7 +703,8 @@ export function Footer() {
             </p>
             <div className="mt-5 flex gap-2">
               <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><MessageCircle className="w-4 h-4" /></a>
-              <a href="https://instagram.com/kalerbodyfocus" aria-label="Instagram" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Facebook className="w-4 h-4" /></a>
               <a href={`mailto:${CONTACT_EMAIL}`} aria-label="Email" className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"><Mail className="w-4 h-4" /></a>
             </div>
           </div>

@@ -15,6 +15,8 @@ const links = [
   { href: "#contact", label: "Contact" },
 ];
 
+const LOGO_URL = (import.meta.env.VITE_LOGO_URL as string | undefined) ?? "";
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);

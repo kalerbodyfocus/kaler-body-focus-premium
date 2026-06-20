@@ -116,7 +116,7 @@ export default function Nav() {
             className="fixed inset-0 z-[60] bg-ink/95 backdrop-blur-2xl"
           >
             <div className="container-px flex items-center justify-between py-5">
-              <span className="font-display font-black text-lg">KALER<span className="text-gold">.</span></span>
+              <img src={logoMark} alt="KBF" className="h-8 w-auto [filter:brightness(0)_invert(1)]" />
               <button aria-label="Close" onClick={() => setOpen(false)} className="grid place-items-center w-11 h-11 rounded-full border border-white/15">
                 <X className="w-5 h-5" />
               </button>

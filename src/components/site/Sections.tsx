@@ -64,7 +64,7 @@ export function Hero({ settings }: { settings?: SiteSettings }) {
   ];
 
   return (
-    <section id="home" className="relative min-h-[100svh] flex items-end overflow-hidden isolate">
+    <section id="home" className="relative min-h-[100svh] flex items-center md:items-end overflow-hidden isolate">
       <motion.div
         initial={{ scale: 1.08, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}

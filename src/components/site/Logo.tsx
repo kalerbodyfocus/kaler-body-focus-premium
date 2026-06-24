@@ -30,20 +30,24 @@ export default function Logo({ variant = "nav", scrolled = false }: LogoProps) {
         />
         <motion.div
           layout
-          className="hidden min-[380px]:flex flex-col leading-[1.1] justify-center"
+          className="flex flex-col leading-[1.1] justify-center"
         >
           <motion.span
             layout
             className={`font-display font-black tracking-tight text-foreground transition-all duration-300 ${
-              scrolled ? "text-sm md:text-base" : "text-base md:text-lg lg:text-xl"
+              scrolled
+                ? "text-xs sm:text-sm md:text-base"
+                : "text-sm sm:text-base md:text-lg lg:text-xl"
             }`}
           >
             KALER<span className="text-gold">.</span>
           </motion.span>
           <motion.span
             layout
-            className={`hidden sm:inline uppercase tracking-[0.25em] text-muted-foreground transition-all duration-300 mt-0.5 overflow-hidden whitespace-nowrap ${
-              scrolled ? "text-[7.5px] md:text-[8px]" : "text-[8px] md:text-[9px]"
+            className={`uppercase tracking-[0.22em] text-muted-foreground transition-all duration-300 mt-0.5 overflow-hidden whitespace-nowrap ${
+              scrolled
+                ? "text-[6.5px] sm:text-[7px] md:text-[8px]"
+                : "text-[7px] sm:text-[8px] md:text-[9px]"
             }`}
           >
             BODY FOCUS

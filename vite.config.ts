@@ -16,7 +16,7 @@ export default defineConfig({
     }),
     react(),
     nitro({
-      preset: process.env.NITRO_PRESET || "node-server",
+      preset: process.env.NITRO_PRESET || (process.env.VERCEL ? "vercel" : (process.env.NETLIFY ? "netlify" : "node-server")),
     }),
   ],
   server: {

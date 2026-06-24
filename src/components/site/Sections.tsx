@@ -64,7 +64,7 @@ export function Hero({ settings }: { settings?: SiteSettings }) {
   ];
 
   return (
-    <section id="home" className="relative min-h-[100svh] flex items-center md:items-end overflow-hidden isolate">
+    <section id="home" className="relative min-h-[100svh] flex items-start md:items-end overflow-hidden isolate">
       <motion.div
         initial={{ scale: 1.08, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -106,7 +106,7 @@ export function Hero({ settings }: { settings?: SiteSettings }) {
         }}
       />
 
-      <div className="container-px relative w-full pb-20 md:pb-28 pt-20 sm:pt-24 md:pt-32">
+      <div className="container-px relative w-full pb-20 md:pb-28 pt-[88px] sm:pt-28 md:pt-32">
         <motion.div
           initial="hidden"
           animate="show"

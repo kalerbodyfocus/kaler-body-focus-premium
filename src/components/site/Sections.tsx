@@ -106,7 +106,7 @@ export function Hero({ settings }: { settings?: SiteSettings }) {
         }}
       />
 
-      <div className="container-px relative w-full pb-20 md:pb-28 pt-32">
+      <div className="container-px relative w-full pb-20 md:pb-28 pt-20 sm:pt-24 md:pt-32">
         <motion.div
           initial="hidden"
           animate="show"

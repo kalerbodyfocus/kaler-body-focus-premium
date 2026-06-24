@@ -68,8 +68,12 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -77,14 +81,27 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
-  ::selection { background: var(--gold); color: var(--ink); }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: var(--gold);
+    color: var(--ink);
+  }
 }
 
 @utility container-px {
   padding-inline: 1.25rem;
-  @media (min-width: 768px) { padding-inline: 2.5rem; }
-  @media (min-width: 1280px) { padding-inline: 5rem; }
+  @media (min-width: 768px) {
+    padding-inline: 2.5rem;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 5rem;
+  }
 }
 
 @utility text-gold-gradient {
@@ -104,12 +121,19 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
   box-shadow: 0 10px 30px -10px oklch(0.78 0.13 84 / 0.5);
   white-space: nowrap;
 }
 @utility btn-gold-hover {
-  &:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 18px 40px -10px oklch(0.78 0.13 84 / 0.65); }
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: 0 18px 40px -10px oklch(0.78 0.13 84 / 0.65);
+  }
 }
 
 @utility btn-ghost {
@@ -122,13 +146,16 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: all .25s ease;
+  transition: all 0.25s ease;
   white-space: nowrap;
   background: oklch(1 0 0 / 0.04);
   backdrop-filter: blur(8px);
 }
 @utility btn-ghost-hover {
-  &:hover { border-color: var(--gold); color: var(--gold); }
+  &:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
 }
 
 @utility eyebrow {

@@ -6,7 +6,12 @@ export function Reveal({
   delay = 0,
   className = "",
   y = 24,
-}: { children: ReactNode; delay?: number; className?: string; y?: number }) {
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+  y?: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
@@ -27,7 +32,8 @@ export function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const inView = useInView(ref, { once: true });
   return (
     <span ref={ref}>
-      {inView ? <CountUp to={to} /> : 0}{suffix}
+      {inView ? <CountUp to={to} /> : 0}
+      {suffix}
     </span>
   );
 }

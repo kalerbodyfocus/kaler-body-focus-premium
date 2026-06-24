@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Logo from "./Logo";
+import { SITE_CONFIG } from "@/config/site-config";
+import { SiteSettings } from "@/lib/sanity";
 
 const links = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
-  { href: "#personal", label: "1-on-1 Personal Training" },
+  { href: "#personal", label: "1-on-1 Training" },
   { href: "#online", label: "Online Coaching" },
   { href: "#services", label: "Services" },
-  { href: "#transformations", label: "Client Transformations" },
+  { href: "#transformations", label: "Transformations" },
   { href: "#testimonials", label: "Testimonials" },
-  { href: "#reviews", label: "Google Reviews" },
+  { href: "#reviews", label: "Reviews" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
 
-export default function Nav() {
+export default function Nav({ settings }: { settings?: SiteSettings }) {
+  const navHeader = settings?.heroPrimaryCta ? "Book Consultation" : SITE_CONFIG.cta.navHeader;
+  const navOpenScreen = settings?.heroPrimaryCta
+    ? "Book Free Consultation"
+    : SITE_CONFIG.cta.navOpenScreen;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
@@ -23,11 +30,14 @@ export default function Nav() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 30);
-      const sections = links.map(l => document.querySelector(l.href));
+      const sections = links.map((l) => document.querySelector(l.href));
       const y = window.scrollY + 140;
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = sections[i] as HTMLElement | null;
-        if (el && el.offsetTop <= y) { setActive(links[i].href); break; }
+        if (el && el.offsetTop <= y) {
+          setActive(links[i].href);
+          break;
+        }
       }
     };
     onScroll();
@@ -46,34 +56,42 @@ export default function Nav() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-          scrolled ? "py-3 bg-background/75 backdrop-blur-xl border-b border-white/5" : "py-5 bg-transparent"
+          scrolled
+            ? "py-3 bg-background/75 backdrop-blur-xl border-b border-white/5"
+            : "py-5 bg-transparent"
         }`}
       >
         <div className="container-px flex items-center justify-between gap-6">
-          <a href="#home" className="flex items-center gap-2 shrink-0">
-            <span className="font-display font-black tracking-tight text-lg sm:text-xl">
-              KALER<span className="text-gold">.</span>
-            </span>
-            <span className="hidden sm:inline text-xs uppercase tracking-[0.3em] text-muted-foreground">Body Focus</span>
+          <a href="#home" className="flex items-center shrink-0">
+            <Logo variant="nav" scrolled={scrolled} />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-7">
-            {links.map(l => (
-              <a key={l.href} href={l.href}
-                 className={`text-sm transition-colors relative ${
-                   active === l.href ? "text-gold" : "text-foreground/75 hover:text-foreground"
-                 }`}>
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-7">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className={`text-xs xl:text-sm transition-colors relative ${
+                  active === l.href ? "text-gold" : "text-foreground/75 hover:text-foreground"
+                }`}
+              >
                 {l.label}
                 {active === l.href && (
-                  <motion.span layoutId="navdot" className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold" />
+                  <motion.span
+                    layoutId="navdot"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold"
+                  />
                 )}
               </a>
             ))}
           </nav>
 
           <div className="flex items-center gap-3">
-            <a href="#inquiry" className="hidden md:inline-flex btn-gold btn-gold-hover text-sm !py-2.5 !px-5">
-              Book Consultation
+            <a
+              href="#inquiry"
+              className="hidden md:inline-flex btn-gold btn-gold-hover text-sm !py-2.5 !px-5"
+            >
+              {navHeader}
             </a>
             <button
               aria-label="Menu"
@@ -95,8 +113,12 @@ export default function Nav() {
             className="fixed inset-0 z-[60] bg-ink/95 backdrop-blur-2xl"
           >
             <div className="container-px flex items-center justify-between py-5">
-              <span className="font-display font-black text-lg">KALER<span className="text-gold">.</span></span>
-              <button aria-label="Close" onClick={() => setOpen(false)} className="grid place-items-center w-11 h-11 rounded-full border border-white/15">
+              <Logo variant="nav-mobile" />
+              <button
+                aria-label="Close"
+                onClick={() => setOpen(false)}
+                className="grid place-items-center w-11 h-11 rounded-full border border-white/15"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -123,7 +145,7 @@ export default function Nav() {
                 transition={{ delay: 0.4 }}
                 className="btn-gold btn-gold-hover mt-8 self-start"
               >
-                Book Free Consultation
+                {navOpenScreen}
               </motion.a>
             </nav>
           </motion.div>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { ArrowUp, MessageCircle } from "lucide-react";
+import { SITE_CONFIG } from "@/config/site-config";
+import { SiteSettings } from "@/lib/sanity";
 
-// WhatsApp number is intentionally not displayed publicly. Configure via env.
-const WA_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ?? "919860398216";
-export const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) ?? "pushpak.pandore@gmail.com";
-export const WHATSAPP = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi Ranjit, I'm interested in coaching.")}`;
+export const CONTACT_EMAIL = SITE_CONFIG.contactEmail;
+export const WHATSAPP = SITE_CONFIG.whatsAppUrl;
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -18,8 +18,12 @@ export function ScrollProgress() {
   );
 }
 
-export function FloatingActions() {
+export function FloatingActions({ settings }: { settings?: SiteSettings }) {
   const [show, setShow] = useState(false);
+  const whatsAppUrl = settings?.whatsAppNumber
+    ? `https://wa.me/${settings.whatsAppNumber}?text=${encodeURIComponent("Hi Ranjit, I'm interested in coaching.")}`
+    : WHATSAPP;
+
   useEffect(() => {
     const fn = () => setShow(window.scrollY > 500);
     window.addEventListener("scroll", fn, { passive: true });
@@ -29,7 +33,7 @@ export function FloatingActions() {
   return (
     <>
       <a
-        href={WHATSAPP}
+        href={whatsAppUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"
@@ -55,11 +59,14 @@ export function FloatingActions() {
   );
 }
 
-export function MobileStickyCTA() {
+export function MobileStickyCTA({ settings }: { settings?: SiteSettings }) {
+  const mobileSticky = settings?.heroPrimaryCta
+    ? "Book Free Consultation"
+    : SITE_CONFIG.cta.mobileSticky;
   return (
     <div className="md:hidden fixed bottom-0 inset-x-0 z-30 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-gradient-to-t from-ink via-ink/95 to-transparent">
       <a href="#inquiry" className="btn-gold btn-gold-hover w-full !py-3.5">
-        Book Free Consultation
+        {mobileSticky}
       </a>
     </div>
   );

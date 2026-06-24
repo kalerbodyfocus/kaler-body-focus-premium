@@ -60,8 +60,8 @@ export default function Nav({ settings }: { settings?: SiteSettings }) {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "py-3 bg-background/75 backdrop-blur-xl border-b border-white/5"
-            : "py-5 bg-transparent"
+            ? "py-2.5 sm:py-3 bg-background/75 backdrop-blur-xl border-b border-white/5"
+            : "py-3.5 sm:py-5 bg-transparent"
         }`}
       >
         <div className="container-px flex items-center justify-between gap-6">

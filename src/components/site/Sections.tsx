@@ -119,9 +119,10 @@ export function Hero({ settings }: { settings?: SiteSettings }) {
           <motion.span
             variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.6 }}
-            className="eyebrow inline-flex items-center gap-2"
+            className="eyebrow inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.28em]"
           >
-            <span className="w-8 h-px bg-gold" /> {locationText}
+            <span className="w-6 sm:w-8 h-px bg-gold shrink-0" />
+            <span className="whitespace-nowrap">{locationText}</span>
           </motion.span>
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0 } }}

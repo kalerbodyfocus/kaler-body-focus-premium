@@ -14,6 +14,8 @@ dist-ssr
 .vinxi
 .tanstack/**
 .nitro
+.sanity
+.sanity/**
 *.local
 .env
 .env.*

@@ -23,7 +23,7 @@ import {
   Quote,
 } from "lucide-react";
 import { Reveal, Counter } from "./Reveal";
-import { WHATSAPP, CONTACT_EMAIL } from "./Floating";
+import { WHATSAPP, CONTACT_EMAIL, FACEBOOK_URL, INSTAGRAM_URL } from "./Floating";
 import Logo from "./Logo";
 import { SITE_CONFIG } from "@/config/site-config";
 import { SiteSettings, TestimonialItem, TransformationItem } from "@/lib/sanity";
@@ -32,6 +32,7 @@ import founder from "@/assets/founder.jpg";
 import gym from "@/assets/gym.jpg";
 import training from "@/assets/training.jpg";
 import online from "@/assets/online.jpg";
+import logoFull from "@/assets/logo-full.png";
 
 export function Hero({ settings }: { settings?: SiteSettings }) {
   const locationText = settings?.locationText || "Christchurch · New Zealand";

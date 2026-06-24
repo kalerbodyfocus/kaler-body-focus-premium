@@ -6,6 +6,8 @@ import { SiteSettings } from "@/lib/sanity";
 
 export const CONTACT_EMAIL = SITE_CONFIG.contactEmail;
 export const WHATSAPP = SITE_CONFIG.whatsAppUrl;
+export const FACEBOOK_URL = (import.meta.env.VITE_FACEBOOK_URL as string | undefined) ?? SITE_CONFIG.facebookUrl;
+export const INSTAGRAM_URL = (import.meta.env.VITE_INSTAGRAM_URL as string | undefined) ?? SITE_CONFIG.instagramUrl;
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();

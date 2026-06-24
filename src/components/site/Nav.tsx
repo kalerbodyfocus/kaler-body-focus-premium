@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import { SITE_CONFIG } from "@/config/site-config";
 import { SiteSettings } from "@/lib/sanity";
+import logoMark from "@/assets/logo-mark.png";
 
 const links = [
   { href: "#home", label: "Home" },
@@ -17,6 +18,8 @@ const links = [
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
+
+const LOGO_URL = (import.meta.env.VITE_LOGO_URL as string | undefined) ?? "";
 
 export default function Nav({ settings }: { settings?: SiteSettings }) {
   const navHeader = settings?.heroPrimaryCta ? "Book Consultation" : SITE_CONFIG.cta.navHeader;

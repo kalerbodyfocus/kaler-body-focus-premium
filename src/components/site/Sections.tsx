@@ -605,16 +605,22 @@ export function Transformations({
                   </div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-ink via-ink/90 to-transparent pointer-events-none">
-                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gold font-bold">
-                    <span>{c.tag}</span>
-                    {c.clientName && (
-                      <span className="text-white/60 font-semibold tracking-normal normal-case first-letter:uppercase">
-                        {c.clientName}
-                      </span>
-                    )}
-                  </div>
+                  <div className="text-xs uppercase tracking-widest text-gold font-bold">{c.tag}</div>
                   <div className="mt-1 font-display text-3xl font-bold tracking-tight text-white">{c.value}</div>
                   <div className="text-xs text-foreground/80 mt-1 font-medium leading-relaxed">{c.text}</div>
+                  {c.clientName && (
+                    <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center shrink-0">
+                        <span className="text-[11px] font-black text-gold leading-none">
+                          {c.clientName.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-bold text-white leading-tight">{c.clientName}</div>
+                        <div className="text-[10px] text-gold/70 uppercase tracking-[0.1em] leading-tight">Client</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </Reveal>

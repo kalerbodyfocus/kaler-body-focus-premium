@@ -101,14 +101,13 @@ export const SITE_CONFIG = {
     },
   ],
 
-  // Default Transformations
   transformations: [
-    { tag: "Fat Loss", value: "-18kg", text: "12-week transformation" },
-    { tag: "Muscle Gain", value: "+9kg", text: "Lean tissue in 24 weeks" },
-    { tag: "Strength", value: "+45%", text: "Total compound lifts" },
-    { tag: "Body Recomp", value: "-12%", text: "Body fat reduction" },
-    { tag: "Confidence", value: "100%", text: "Lifestyle reset" },
-    { tag: "Performance", value: "PR", text: "First pull-up unlocked" },
+    { tag: "Fat Loss", value: "-18kg", text: "12-week transformation", clientName: "Sarah M." },
+    { tag: "Muscle Gain", value: "+9kg", text: "Lean tissue in 24 weeks", clientName: "James K." },
+    { tag: "Strength", value: "+45%", text: "Total compound lifts", clientName: "Tom R." },
+    { tag: "Body Recomp", value: "-12%", text: "Body fat reduction", clientName: "Priya N." },
+    { tag: "Confidence", value: "100%", text: "Lifestyle reset", clientName: "Judith" },
+    { tag: "Performance", value: "PR", text: "First pull-up unlocked", clientName: "Aroha W." },
   ],
 
   // Default copies for editable sections

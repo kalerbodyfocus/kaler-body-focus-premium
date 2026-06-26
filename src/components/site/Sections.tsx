@@ -615,10 +615,7 @@ export function Transformations({
                           {c.clientName.charAt(0).toUpperCase()}
                         </span>
                       </div>
-                      <div>
-                        <div className="text-[11px] font-bold text-white leading-tight">{c.clientName}</div>
-                        <div className="text-[10px] text-gold/70 uppercase tracking-[0.1em] leading-tight">Client</div>
-                      </div>
+                      <div className="text-[12px] font-bold text-white leading-tight">{c.clientName}</div>
                     </div>
                   )}
                 </div>

@@ -46,8 +46,8 @@ export default function Logo({ variant = "nav", scrolled = false }: LogoProps) {
             layout
             className={`font-display font-bold uppercase tracking-[0.2em] text-gold transition-all duration-300 mt-0.5 overflow-hidden whitespace-nowrap ${
               scrolled
-                ? "text-[8px] sm:text-[9px] md:text-[10px]"
-                : "text-[9px] sm:text-[10px] md:text-[11px] lg:text-xs"
+                ? "text-[9px] sm:text-[10px]"
+                : "text-[10px] sm:text-xs"
             }`}
           >
             BODY FOCUS
@@ -73,7 +73,7 @@ export default function Logo({ variant = "nav", scrolled = false }: LogoProps) {
           <span className="font-display font-black text-sm tracking-tight text-foreground">
             KALER
           </span>
-          <span className="font-display font-bold text-[10px] uppercase tracking-[0.2em] text-gold mt-0.5">
+          <span className="font-display font-bold text-[10px] sm:text-xs uppercase tracking-[0.2em] text-gold mt-0.5">
             BODY FOCUS
           </span>
         </div>

@@ -235,7 +235,7 @@ export function About({ settings }: { settings?: SiteSettings }) {
                 width={1024}
                 height={1024}
                 loading="lazy"
-                className="w-full h-auto object-cover"
+                className="w-full aspect-square object-cover object-top"
               />
             </div>
             <div className="absolute -bottom-6 -right-2 sm:right-6 card-surface p-5 max-w-[220px]">

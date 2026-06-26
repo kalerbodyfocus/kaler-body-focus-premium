@@ -34,6 +34,7 @@ export interface TestimonialItem {
 
 // Transformation interface
 export interface TransformationItem {
+  clientName?: string;
   tag: string;
   value: string;
   text: string;
@@ -178,6 +179,7 @@ export async function getTransformations(): Promise<TransformationItem[]> {
   try {
     const rawTransformations = await client.fetch<TransformationItem[]>(
       `*[_type == "transformation"] | order(order asc) {
+        clientName,
         tag,
         value,
         text,

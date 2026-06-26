@@ -13,6 +13,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "clientName",
+      title: "Client Name",
+      type: "string",
+      description: "Optional name of the client (e.g. 'Rahul', 'James')",
+    }),
+    defineField({
       name: "value",
       title: "Metric Value",
       type: "string",

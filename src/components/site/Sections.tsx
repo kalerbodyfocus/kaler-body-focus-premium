@@ -576,12 +576,12 @@ export function Transformations({
                     </div>
                   </div>
                 ) : (c.beforeImage || c.afterImage) ? (
-                  <div className="absolute inset-0 overflow-hidden bg-surface flex items-center justify-center">
+                  <div className="absolute inset-0 overflow-hidden bg-zinc-950 flex items-center justify-center">
                     <img
                       src={c.beforeImage || c.afterImage}
                       alt={c.text || "Transformation"}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-full object-contain group-hover:scale-102 transition-transform duration-700"
                     />
                   </div>
                 ) : (
@@ -605,7 +605,14 @@ export function Transformations({
                   </div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-ink via-ink/90 to-transparent pointer-events-none">
-                  <div className="text-xs uppercase tracking-widest text-gold font-bold">{c.tag}</div>
+                  <div className="flex justify-between items-center text-xs uppercase tracking-widest text-gold font-bold">
+                    <span>{c.tag}</span>
+                    {c.clientName && (
+                      <span className="text-white/60 font-semibold tracking-normal normal-case first-letter:uppercase">
+                        {c.clientName}
+                      </span>
+                    )}
+                  </div>
                   <div className="mt-1 font-display text-3xl font-bold tracking-tight text-white">{c.value}</div>
                   <div className="text-xs text-foreground/80 mt-1 font-medium leading-relaxed">{c.text}</div>
                 </div>

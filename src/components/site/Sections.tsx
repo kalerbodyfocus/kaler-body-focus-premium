@@ -1170,15 +1170,6 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
             </p>
             <div className="mt-5 flex gap-2">
               <a
-                href={whatsAppUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Chat on WhatsApp"
-                className="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:border-gold hover:text-gold transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-              </a>
-              <a
                 href={SITE_CONFIG.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1248,9 +1239,9 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
                   href={WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-gold inline-flex items-center gap-2"
+                  className="hover:text-gold"
                 >
-                  <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
+                  WhatsApp
                 </a>
               </li>
               <li>

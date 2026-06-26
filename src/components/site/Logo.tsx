@@ -40,14 +40,14 @@ export default function Logo({ variant = "nav", scrolled = false }: LogoProps) {
                 : "text-sm sm:text-base md:text-lg lg:text-xl"
             }`}
           >
-            KALER<span className="text-gold">.</span>
+            KALER
           </motion.span>
           <motion.span
             layout
-            className={`uppercase tracking-[0.22em] text-muted-foreground transition-all duration-300 mt-0.5 overflow-hidden whitespace-nowrap ${
+            className={`font-display font-bold uppercase tracking-[0.2em] text-gold transition-all duration-300 mt-0.5 overflow-hidden whitespace-nowrap ${
               scrolled
-                ? "text-[6.5px] sm:text-[7px] md:text-[8px]"
-                : "text-[7px] sm:text-[8px] md:text-[9px]"
+                ? "text-[8px] sm:text-[9px] md:text-[10px]"
+                : "text-[9px] sm:text-[10px] md:text-[11px] lg:text-xs"
             }`}
           >
             BODY FOCUS
@@ -70,10 +70,10 @@ export default function Logo({ variant = "nav", scrolled = false }: LogoProps) {
           }}
         />
         <div className="flex flex-col leading-[1.1] justify-center">
-          <span className="font-display font-black text-sm tracking-tight">
-            KALER<span className="text-gold">.</span>
+          <span className="font-display font-black text-sm tracking-tight text-foreground">
+            KALER
           </span>
-          <span className="text-[8px] uppercase tracking-[0.25em] text-muted-foreground mt-0.5">
+          <span className="font-display font-bold text-[10px] uppercase tracking-[0.2em] text-gold mt-0.5">
             BODY FOCUS
           </span>
         </div>
@@ -94,10 +94,10 @@ export default function Logo({ variant = "nav", scrolled = false }: LogoProps) {
         }}
       />
       <div className="flex flex-col leading-[1.1] justify-center">
-        <span className="font-display font-black text-base md:text-lg tracking-tight">
-          KALER<span className="text-gold">.</span>
+        <span className="font-display font-black text-base md:text-lg tracking-tight text-foreground">
+          KALER
         </span>
-        <span className="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-muted-foreground mt-0.5">
+        <span className="font-display font-bold text-xs md:text-sm uppercase tracking-[0.2em] text-gold mt-0.5">
           BODY FOCUS
         </span>
       </div>

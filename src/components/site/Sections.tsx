@@ -550,42 +550,60 @@ export function Transformations({
             <Reveal key={i} delay={0.05 * i}>
               <div className="group relative aspect-[4/5] rounded-2xl overflow-hidden card-surface border border-white/5 hover:border-gold/30 transition-colors duration-300">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,oklch(0.78_0.13_84/0.18),transparent_60%)] pointer-events-none" />
-                <div className="absolute inset-0 grid grid-cols-2">
-                  <div className="relative border-r border-white/5 h-full overflow-hidden bg-surface flex items-center justify-center">
-                    {c.beforeImage ? (
+                {c.beforeImage && c.afterImage ? (
+                  <div className="absolute inset-0 grid grid-cols-2">
+                    <div className="relative border-r border-white/5 h-full overflow-hidden bg-surface flex items-center justify-center">
                       <img
                         src={c.beforeImage}
                         alt="Before"
                         loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
-                    ) : (
-                      <span className="text-xs uppercase tracking-widest text-muted-foreground/80 font-medium">
+                      <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] uppercase tracking-wider text-white font-semibold z-10 select-none">
                         Before
-                      </span>
-                    )}
-                    <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] uppercase tracking-wider text-white font-semibold z-10 select-none">
-                      Before
+                      </div>
                     </div>
-                  </div>
-                  <div className="relative h-full overflow-hidden bg-surface flex items-center justify-center">
-                    {c.afterImage ? (
+                    <div className="relative h-full overflow-hidden bg-surface flex items-center justify-center">
                       <img
                         src={c.afterImage}
                         alt="After"
                         loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
-                    ) : (
+                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-gold/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-black font-bold z-10 select-none">
+                        After
+                      </div>
+                    </div>
+                  </div>
+                ) : (c.beforeImage || c.afterImage) ? (
+                  <div className="absolute inset-0 overflow-hidden bg-surface flex items-center justify-center">
+                    <img
+                      src={c.beforeImage || c.afterImage}
+                      alt={c.text || "Transformation"}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 grid grid-cols-2">
+                    <div className="relative border-r border-white/5 h-full overflow-hidden bg-surface flex items-center justify-center">
+                      <span className="text-xs uppercase tracking-widest text-muted-foreground/80 font-medium">
+                        Before
+                      </span>
+                      <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] uppercase tracking-wider text-white font-semibold z-10 select-none">
+                        Before
+                      </div>
+                    </div>
+                    <div className="relative h-full overflow-hidden bg-surface flex items-center justify-center">
                       <span className="text-xs uppercase tracking-widest text-gold font-medium">
                         After
                       </span>
-                    )}
-                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-gold/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-black font-bold z-10 select-none">
-                      After
+                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-gold/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-black font-bold z-10 select-none">
+                        After
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-ink via-ink/90 to-transparent pointer-events-none">
                   <div className="text-xs uppercase tracking-widest text-gold font-bold">{c.tag}</div>
                   <div className="mt-1 font-display text-3xl font-bold tracking-tight text-white">{c.value}</div>

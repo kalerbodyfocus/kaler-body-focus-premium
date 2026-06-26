@@ -52,7 +52,7 @@ export const Route = createFileRoute("/")({
         name: "Kaler Body Focus",
         url: "/",
         logo: ogImage,
-        sameAs: ["https://instagram.com/kalerbodyfocus", "https://facebook.com/kalerbodyfocus"],
+        sameAs: ["https://instagram.com/kalerbodyfocus", "https://www.facebook.com/share/1D28xpLREs/?mibextid=wwXIfr"],
       }),
     }],
   }),

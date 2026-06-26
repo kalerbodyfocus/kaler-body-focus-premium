@@ -1164,8 +1164,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
       <div className="container-px">
         <div className="grid md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
-            <Logo variant="footer" />
-            <p className="mt-3 text-foreground/60 max-w-md text-sm">
+            <p className="text-foreground/60 max-w-md text-sm">
               Premium personal training and online coaching for busy professionals. Built on
               evidence, accountability, and real results.
             </p>
@@ -1239,7 +1238,6 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
           <div>
             <div className="text-xs uppercase tracking-widest text-gold mb-4">Contact</div>
             <ul className="space-y-2 text-sm text-foreground/65">
-              <li>{SITE_CONFIG.location}</li>
               <li>
                 <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-gold break-all">
                   {CONTACT_EMAIL}
@@ -1252,7 +1250,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
                   rel="noopener noreferrer"
                   className="hover:text-gold inline-flex items-center gap-2"
                 >
-                  <MessageCircle className="w-3.5 h-3.5" /> Chat on WhatsApp
+                  <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
                 </a>
               </li>
               <li>

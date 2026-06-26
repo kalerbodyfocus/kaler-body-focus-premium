@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
   whatsAppNumber: WA_NUMBER,
   whatsAppUrl: `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi Ranjit, I'm interested in coaching.")}`,
   instagramUrl: "https://instagram.com/kalerbodyfocus",
-  facebookUrl: "https://facebook.com/kalerbodyfocus",
+  facebookUrl: "https://www.facebook.com/share/1D28xpLREs/?mibextid=wwXIfr",
   googleBusinessUrl: "https://share.google/z4R22PV9UCgxolbCb",
   googleReviewsWidgetUrl: "",
   // Google Reviews Trustindex Widget ID

@@ -142,6 +142,8 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
 
 const formSchema = z
   .object({
+    // Honeypot field — must be empty. Hidden from real users, bots fill it in.
+    _hp: z.string().max(0).optional(),
     fullName: z.string().trim().min(1, "Full name is required"),
     email: z
       .string()
@@ -323,6 +325,7 @@ export function InquiryForm({ settings }: { settings?: SiteSettings }) {
     setSubmitError("");
     try {
       const payload = {
+        _hp: formData._hp ?? "",
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
@@ -392,6 +395,15 @@ export function InquiryForm({ settings }: { settings?: SiteSettings }) {
 
   return (
     <section id="inquiry" className="py-24 md:py-36">
+      {/* Honeypot field — hidden from real users, catches bots */}
+      <input
+        type="text"
+        {...register("_hp")}
+        aria-hidden="true"
+        tabIndex={-1}
+        autoComplete="off"
+        style={{ display: "none" }}
+      />
       <div className="container-px">
         <div className="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16">
           <Reveal>
@@ -483,7 +495,7 @@ export function InquiryForm({ settings }: { settings?: SiteSettings }) {
                       >
                         Return to Homepage
                       </button>
-                    </div>
+                    </div>.
                   </motion.div>
                 ) : (
                   <motion.div

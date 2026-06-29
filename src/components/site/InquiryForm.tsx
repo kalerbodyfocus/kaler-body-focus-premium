@@ -21,7 +21,8 @@ type Field = {
   full?: boolean;
 };
 
-const steps: { title: string; subtitle: string; fields: Field[] }[] = [
+function buildSteps(settings?: SiteSettings): { title: string; subtitle: string; fields: Field[] }[] {
+  return [
   {
     title: "Personal Details",
     subtitle: "Tell us about yourself.",
@@ -43,7 +44,7 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     fields: [
       {
         name: "goal",
-        label: "What Is Your Primary Goal?",
+        label: settings?.formGoalQuestion || "What Is Your Primary Goal?",
         options: [
           "Fat Loss",
           "Muscle Gain",
@@ -102,10 +103,10 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     title: "Challenges",
     subtitle: "Where you've been stuck.",
     fields: [
-      { name: "struggle", label: "What Is Your Biggest Fitness Struggle?", type: "textarea", full: true },
-      { name: "previous", label: "Why Have Your Previous Attempts Failed?", type: "textarea", full: true },
-      { name: "motivation", label: "Why Did You Decide to Start Your Fitness Journey Now?", type: "textarea", full: true },
-      { name: "outcome", label: "What Are Your Expected Outcomes from This Coaching Program?", type: "textarea", full: true },
+      { name: "struggle", label: settings?.formStruggleQuestion || "What Is Your Biggest Fitness Struggle?", type: "textarea", full: true },
+      { name: "previous", label: settings?.formPreviousQuestion || "Why Have Your Previous Attempts Failed?", type: "textarea", full: true },
+      { name: "motivation", label: settings?.formMotivationQuestion || "Why Did You Decide to Start Your Fitness Journey Now?", type: "textarea", full: true },
+      { name: "outcome", label: settings?.formOutcomeQuestion || "What Are Your Expected Outcomes from This Coaching Program?", type: "textarea", full: true },
     ],
   },
   {
@@ -114,7 +115,7 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     fields: [
       {
         name: "source",
-        label: "How Did You Hear About Us?",
+        label: settings?.formSourceQuestion || "How Did You Hear About Us?",
         options: ["Google", "Instagram", "Facebook", "Referral", "Other"],
         full: true,
       },
@@ -138,7 +139,8 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
       { name: "startDate", label: "What Is Your Preferred Start Date?", type: "date", full: true },
     ],
   },
-];
+  ];
+}
 
 const formSchema = z
   .object({
@@ -215,7 +217,7 @@ export function InquiryForm({ settings }: { settings?: SiteSettings }) {
   const showWhatsApp = settings?.formShowWhatsApp !== false;
 
   // Dynamically filter Step 1 fields based on CMS toggles
-  const dynamicSteps = steps.map((s, stepIdx) => {
+  const dynamicSteps = buildSteps(settings).map((s, stepIdx) => {
     if (stepIdx === 0) {
       const filteredFields = s.fields.filter((f) => {
         if (f.name === "whatsapp" && !showWhatsApp) return false;

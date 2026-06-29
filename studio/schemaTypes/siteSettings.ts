@@ -370,5 +370,59 @@ export default defineType({
       initialValue: true,
       group: "form",
     }),
+
+    // --- Form Question Labels (Challenges Step) ---
+    defineField({
+      name: "formMotivationQuestion",
+      title: "Form: 'Motivation' Question Label",
+      type: "string",
+      description: "The question shown for motivation field in Step 4",
+      initialValue: "Why Did You Decide to Start Your Fitness Journey Now?",
+      group: "form",
+    }),
+    defineField({
+      name: "formOutcomeQuestion",
+      title: "Form: 'Expected Outcome' Question Label",
+      type: "string",
+      description: "The question shown for outcome field in Step 4",
+      initialValue: "What Are Your Expected Outcomes from This Coaching Program?",
+      group: "form",
+    }),
+    defineField({
+      name: "formStruggleQuestion",
+      title: "Form: 'Biggest Struggle' Question Label",
+      type: "string",
+      description: "The question shown for biggest struggle field in Step 4",
+      initialValue: "What Is Your Biggest Fitness Struggle?",
+      group: "form",
+    }),
+    defineField({
+      name: "formPreviousQuestion",
+      title: "Form: 'Previous Attempts' Question Label",
+      type: "string",
+      description: "The question shown for previous attempts field in Step 4",
+      initialValue: "Why Have Your Previous Attempts Failed?",
+      group: "form",
+    }),
+
+    // --- Form Question Labels (Goals Step) ---
+    defineField({
+      name: "formGoalQuestion",
+      title: "Form: 'Primary Goal' Question Label",
+      type: "string",
+      description: "The question shown for primary goal in Step 2",
+      initialValue: "What Is Your Primary Goal?",
+      group: "form",
+    }),
+
+    // --- Form Question Labels (Lead Source Step) ---
+    defineField({
+      name: "formSourceQuestion",
+      title: "Form: 'How Did You Hear' Question Label",
+      type: "string",
+      description: "The question shown for how they heard about you in Step 5",
+      initialValue: "How Did You Hear About Us?",
+      group: "form",
+    }),
   ],
 });

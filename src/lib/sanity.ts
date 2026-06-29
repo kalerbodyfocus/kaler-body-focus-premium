@@ -62,6 +62,14 @@ export interface SiteSettings {
   formShowBodyStats?: boolean;
   formShowWhatsApp?: boolean;
 
+  // Form question labels (editable from Sanity)
+  formMotivationQuestion?: string;
+  formOutcomeQuestion?: string;
+  formStruggleQuestion?: string;
+  formPreviousQuestion?: string;
+  formGoalQuestion?: string;
+  formSourceQuestion?: string;
+
   // New Copywriting Fields
   heroImage?: string;
   heroTitleLine1?: string;
@@ -224,6 +232,13 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     formShowBodyStats: true,
     formShowWhatsApp: true,
 
+    formMotivationQuestion: "Why Did You Decide to Start Your Fitness Journey Now?",
+    formOutcomeQuestion: "What Are Your Expected Outcomes from This Coaching Program?",
+    formStruggleQuestion: "What Is Your Biggest Fitness Struggle?",
+    formPreviousQuestion: "Why Have Your Previous Attempts Failed?",
+    formGoalQuestion: "What Is Your Primary Goal?",
+    formSourceQuestion: "How Did You Hear About Us?",
+
     heroImage: undefined,
     heroTitleLine1: SITE_CONFIG.hero.titleLine1,
     heroTitleLine2: SITE_CONFIG.hero.titleLine2,
@@ -279,6 +294,12 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         formShowAge,
         formShowBodyStats,
         formShowWhatsApp,
+        formMotivationQuestion,
+        formOutcomeQuestion,
+        formStruggleQuestion,
+        formPreviousQuestion,
+        formGoalQuestion,
+        formSourceQuestion,
 
         heroTitleLine1,
         heroTitleLine2,
@@ -337,6 +358,13 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       formShowAge: settings.formShowAge !== undefined ? settings.formShowAge : defaults.formShowAge,
       formShowBodyStats: settings.formShowBodyStats !== undefined ? settings.formShowBodyStats : defaults.formShowBodyStats,
       formShowWhatsApp: settings.formShowWhatsApp !== undefined ? settings.formShowWhatsApp : defaults.formShowWhatsApp,
+
+      formMotivationQuestion: settings.formMotivationQuestion || defaults.formMotivationQuestion,
+      formOutcomeQuestion: settings.formOutcomeQuestion || defaults.formOutcomeQuestion,
+      formStruggleQuestion: settings.formStruggleQuestion || defaults.formStruggleQuestion,
+      formPreviousQuestion: settings.formPreviousQuestion || defaults.formPreviousQuestion,
+      formGoalQuestion: settings.formGoalQuestion || defaults.formGoalQuestion,
+      formSourceQuestion: settings.formSourceQuestion || defaults.formSourceQuestion,
 
       heroTitleLine1: settings.heroTitleLine1 || defaults.heroTitleLine1,
       heroTitleLine2: settings.heroTitleLine2 || defaults.heroTitleLine2,

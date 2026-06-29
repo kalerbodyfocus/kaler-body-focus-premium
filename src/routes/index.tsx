@@ -76,8 +76,8 @@ function Page() {
       <Online settings={settings} />
       <Services items={services} />
       <Transformations items={transformations} />
-      <Testimonials items={testimonials} />
       <Reviews />
+      <Testimonials items={testimonials} />
       <InquiryForm settings={settings} />
       <FAQ items={faqs} />
       <Contact settings={settings} />

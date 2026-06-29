@@ -714,111 +714,121 @@ const testimonialsData: TestimonialItem[] = [
 ];
 
 export function Testimonials({ items = SITE_CONFIG.testimonials }: { items?: TestimonialItem[] }) {
-  const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const total = items.length;
-
-  // Auto-advance every 4 seconds
-  useEffect(() => {
-    if (paused || total <= 1) return;
-    const id = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % total);
-    }, 4000);
-    return () => clearInterval(id);
-  }, [paused, total]);
-
-  const prev = () => { setCurrent((p) => (p - 1 + total) % total); setPaused(true); };
-  const next = () => { setCurrent((p) => (p + 1) % total); setPaused(true); };
-  const active = items[current] || items[0];
+  const [i, setI] = useState(0);
+  const active = items[i] || items[0];
 
   return (
-    <section
-      id="testimonials"
-      className="py-24 md:py-36 bg-surface/30 border-y border-white/5"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <section id="testimonials" className="py-24 md:py-36 bg-surface/30 border-y border-white/5">
       <div className="container-px">
-        <Reveal><span className="eyebrow">Client Reviews</span></Reveal>
+        <Reveal>
+          <span className="eyebrow">Client Reviews</span>
+        </Reveal>
         <Reveal delay={0.1}>
           <h2 className="mt-4 font-display font-black text-4xl sm:text-5xl md:text-6xl max-w-3xl">
             What clients <span className="text-gold-gradient">actually say.</span>
           </h2>
         </Reveal>
 
-        {/* Card slider — all cards visible in a horizontal strip */}
-        <div className="mt-12 relative overflow-hidden">
-          <motion.div
-            className="flex gap-4"
-            animate={{ x: `-${current * 100}%` }}
-            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-          >
-            {items.map((t, idx) => (
-              <div
-                key={t.id || idx}
-                className="card-surface p-7 sm:p-9 flex flex-col justify-between shrink-0 w-full rounded-2xl border border-white/5"
-                style={{ minHeight: 260 }}
-              >
-                {/* Stars */}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, s) => (
-                    <Star key={s} className="w-4 h-4 fill-gold text-gold" />
+        <div className="mt-12 grid lg:grid-cols-[1.2fr_1fr] gap-6">
+          <Reveal>
+            <div className="card-surface p-8 md:p-12 relative min-h-[320px] h-full flex flex-col justify-between">
+              <div>
+                <Quote className="w-10 h-10 text-gold/30 mb-6" />
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-xl md:text-2xl font-display leading-relaxed"
+                >
+                  "{active.testimonialText}"
+                </motion.p>
+              </div>
+              <div className="mt-8 flex items-center justify-between flex-wrap gap-4">
+                <div>
+                  <div className="font-bold">{active.clientName}</div>
+                  <div className="text-sm text-muted-foreground">{active.clientRole}</div>
+                </div>
+                <div className="flex gap-2">
+                  {items.map((_, k) => (
+                    <button
+                      key={k}
+                      onClick={() => setI(k)}
+                      aria-label={`Testimonial ${k + 1}`}
+                      className={`h-1.5 rounded-full transition-all ${k === i ? "w-8 bg-gold" : "w-3 bg-white/20"}`}
+                    />
                   ))}
                 </div>
-                <div>
-                  <Quote className="w-8 h-8 text-gold/20 mb-3" />
-                  <p className="text-lg sm:text-xl font-display leading-relaxed">
-                    "{t.testimonialText}"
-                  </p>
-                </div>
-                <div className="mt-6 pt-5 border-t border-white/8 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center shrink-0">
-                    <span className="text-sm font-black text-gold">{t.clientName.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm">{t.clientName}</div>
-                    <div className="text-xs text-muted-foreground">{t.clientRole}</div>
-                  </div>
-                  {t.transformationSummary && (
-                    <div className="ml-auto text-xs text-gold font-semibold text-right max-w-[160px] leading-tight">
-                      {t.transformationSummary}
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="h-full">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                  className="h-full"
+                >
+                  {active.videoUrl ? (
+                    <div className="card-surface p-6 sm:p-8 h-full flex flex-col justify-between border border-white/5">
+                      <div>
+                        <span className="text-xs uppercase tracking-widest text-gold font-bold block mb-4">
+                          Video Testimonial
+                        </span>
+                        <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl">
+                          <video
+                            src={active.videoUrl}
+                            poster={active.thumbnail || undefined}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="mt-6">
+                          <div className="text-xs uppercase tracking-widest text-gold font-semibold">
+                            {active.transformationSummary}
+                          </div>
+                          <p className="mt-2 text-foreground/75 text-sm leading-relaxed">
+                            Watch {active.clientName}'s journey and results in their own words.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="card-surface p-8 h-full flex flex-col justify-center items-center text-center min-h-[340px] border border-gold/15 shadow-[0_20px_50px_rgba(0,0,0,0.9),_0_0_30px_rgba(212,175,55,0.02)]">
+                      {/* Center Play Icon with Coming Soon overlay */}
+                      <div className="w-16 h-16 rounded-full bg-gold/10 border border-gold/20 grid place-items-center mb-6 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+                        <div className="w-0 h-0 border-l-[12px] border-l-gold/40 border-y-[8px] border-y-transparent ml-1" />
+                      </div>
+
+                      <span className="text-xs uppercase tracking-widest text-gold font-bold block mb-2">
+                        Video Testimonial
+                      </span>
+
+                      <h4 className="font-display text-xl font-extrabold text-foreground tracking-tight">
+                        Coming Soon
+                      </h4>
+
+                      <p className="mt-3 text-foreground/60 text-sm max-w-sm leading-relaxed">
+                        Client video will be available soon. Continue reading the written
+                        transformation story.
+                      </p>
                     </div>
                   )}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Controls */}
-        <div className="mt-6 flex items-center justify-between">
-          <div className="flex gap-2">
-            {items.map((_, k) => (
-              <button
-                key={k}
-                onClick={() => { setCurrent(k); setPaused(true); }}
-                aria-label={`Review ${k + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  k === current ? 'w-8 bg-gold' : 'w-3 bg-white/20 hover:bg-white/40'
-                }`}
-              />
-            ))}
-          </div>
-          <div className="flex gap-3">
-            <button onClick={prev} aria-label="Previous review"
-              className="w-11 h-11 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all">
-              <ChevronRight className="w-5 h-5 rotate-180" />
-            </button>
-            <button onClick={next} aria-label="Next review"
-              className="w-11 h-11 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all">
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
   );
 }
+
 
 export function Reviews() {
   const AmpIframe = "amp-iframe" as ElementType;

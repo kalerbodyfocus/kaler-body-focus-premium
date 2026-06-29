@@ -527,13 +527,87 @@ export function Transformations({
 }: {
   items?: TransformationItem[];
 }) {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = items.length;
+  const CARD_WIDTH = 340; // px — matches the card min-w below
+  const GAP = 16;
+
+  // Auto-advance every 3 seconds (slow)
+  useEffect(() => {
+    if (paused || total <= 1) return;
+    const id = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % total);
+    }, 3000);
+    return () => clearInterval(id);
+  }, [paused, total]);
+
+  const prev = () => setCurrent((p) => (p - 1 + total) % total);
+  const next = () => setCurrent((p) => (p + 1) % total);
+
+  // Card renderer — kept identical to original
+  const renderCard = (c: TransformationItem, idx: number) => (
+    <div
+      key={idx}
+      className="group relative rounded-2xl overflow-hidden card-surface border border-white/5 hover:border-gold/30 transition-colors duration-300 shrink-0"
+      style={{ width: CARD_WIDTH, minHeight: 420 }}
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,oklch(0.78_0.13_84/0.18),transparent_60%)] pointer-events-none" />
+      {c.beforeImage && c.afterImage ? (
+        <div className="absolute inset-0 grid grid-cols-2">
+          <div className="relative border-r border-white/5 h-full overflow-hidden bg-surface flex items-center justify-center">
+            <img src={c.beforeImage} alt="Before" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] uppercase tracking-wider text-white font-semibold z-10 select-none">Before</div>
+          </div>
+          <div className="relative h-full overflow-hidden bg-surface flex items-center justify-center">
+            <img src={c.afterImage} alt="After" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-gold/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-black font-bold z-10 select-none">After</div>
+          </div>
+        </div>
+      ) : (c.beforeImage || c.afterImage) ? (
+        <div className="absolute inset-0 overflow-hidden bg-zinc-950 flex items-center justify-center">
+          <img src={c.beforeImage || c.afterImage} alt={c.text || 'Transformation'} loading="lazy" className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-700" />
+        </div>
+      ) : (
+        <div className="absolute inset-0 grid grid-cols-2">
+          <div className="relative border-r border-white/5 h-full overflow-hidden bg-surface flex items-center justify-center">
+            <span className="text-xs uppercase tracking-widest text-muted-foreground/80 font-medium">Before</span>
+            <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] uppercase tracking-wider text-white font-semibold z-10 select-none">Before</div>
+          </div>
+          <div className="relative h-full overflow-hidden bg-surface flex items-center justify-center">
+            <span className="text-xs uppercase tracking-widest text-gold font-medium">After</span>
+            <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-gold/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-black font-bold z-10 select-none">After</div>
+          </div>
+        </div>
+      )}
+      <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-ink via-ink/90 to-transparent pointer-events-none">
+        <div className="text-xs uppercase tracking-widest text-gold font-bold">{c.tag}</div>
+        <div className="mt-1 font-display text-3xl font-bold tracking-tight text-white">{c.value}</div>
+        <div className="text-xs text-foreground/80 mt-1 font-medium leading-relaxed">{c.text}</div>
+        {c.clientName && (
+          <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center shrink-0">
+              <span className="text-[11px] font-black text-gold leading-none">{c.clientName.charAt(0).toUpperCase()}</span>
+            </div>
+            <div className="text-[12px] font-bold text-white leading-tight">{c.clientName}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
-    <section id="transformations" className="py-24 md:py-36">
+    <section
+      id="transformations"
+      className="py-24 md:py-36 overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
       <div className="container-px">
         <div className="text-center max-w-2xl mx-auto">
-          <Reveal>
-            <span className="eyebrow">Transformations</span>
-          </Reveal>
+          <Reveal><span className="eyebrow">Success Stories</span></Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-4 font-display font-black text-4xl sm:text-5xl md:text-6xl">
               Real People. <span className="text-gold-gradient">Real Results.</span>
@@ -541,91 +615,56 @@ export function Transformations({
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-5 text-foreground/65">
-              Weight loss, muscle gain, strength gains and real lifestyle change — built one client
-              at a time.
+              Weight loss, muscle gain, strength gains and real lifestyle change — built one client at a time.
             </p>
           </Reveal>
         </div>
+      </div>
 
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {items.map((c, i) => (
-            <Reveal key={i} delay={0.05 * i}>
-              <div className="group relative aspect-[4/5] rounded-2xl overflow-hidden card-surface border border-white/5 hover:border-gold/30 transition-colors duration-300">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,oklch(0.78_0.13_84/0.18),transparent_60%)] pointer-events-none" />
-                {c.beforeImage && c.afterImage ? (
-                  <div className="absolute inset-0 grid grid-cols-2">
-                    <div className="relative border-r border-white/5 h-full overflow-hidden bg-surface flex items-center justify-center">
-                      <img
-                        src={c.beforeImage}
-                        alt="Before"
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] uppercase tracking-wider text-white font-semibold z-10 select-none">
-                        Before
-                      </div>
-                    </div>
-                    <div className="relative h-full overflow-hidden bg-surface flex items-center justify-center">
-                      <img
-                        src={c.afterImage}
-                        alt="After"
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-gold/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-black font-bold z-10 select-none">
-                        After
-                      </div>
-                    </div>
-                  </div>
-                ) : (c.beforeImage || c.afterImage) ? (
-                  <div className="absolute inset-0 overflow-hidden bg-zinc-950 flex items-center justify-center">
-                    <img
-                      src={c.beforeImage || c.afterImage}
-                      alt={c.text || "Transformation"}
-                      loading="lazy"
-                      className="w-full h-full object-contain group-hover:scale-102 transition-transform duration-700"
-                    />
-                  </div>
-                ) : (
-                  <div className="absolute inset-0 grid grid-cols-2">
-                    <div className="relative border-r border-white/5 h-full overflow-hidden bg-surface flex items-center justify-center">
-                      <span className="text-xs uppercase tracking-widest text-muted-foreground/80 font-medium">
-                        Before
-                      </span>
-                      <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] uppercase tracking-wider text-white font-semibold z-10 select-none">
-                        Before
-                      </div>
-                    </div>
-                    <div className="relative h-full overflow-hidden bg-surface flex items-center justify-center">
-                      <span className="text-xs uppercase tracking-widest text-gold font-medium">
-                        After
-                      </span>
-                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-gold/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-black font-bold z-10 select-none">
-                        After
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-ink via-ink/90 to-transparent pointer-events-none">
-                  <div className="text-xs uppercase tracking-widest text-gold font-bold">{c.tag}</div>
-                  <div className="mt-1 font-display text-3xl font-bold tracking-tight text-white">{c.value}</div>
-                  <div className="text-xs text-foreground/80 mt-1 font-medium leading-relaxed">{c.text}</div>
-                  {c.clientName && (
-                    <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center shrink-0">
-                        <span className="text-[11px] font-black text-gold leading-none">
-                          {c.clientName.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                      <div className="text-[12px] font-bold text-white leading-tight">{c.clientName}</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </Reveal>
-          ))}
+      {/* Sliding track */}
+      <div className="mt-14 relative">
+        <motion.div
+          className="flex"
+          animate={{ x: -(current * (CARD_WIDTH + GAP)) }}
+          transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+          style={{ gap: GAP, paddingLeft: 'max(1.5rem, calc((100vw - 1200px)/2 + 1.5rem))' }}
+        >
+          {items.map((c, idx) => renderCard(c, idx))}
+          {/* Duplicate first card for seamless loop feel */}
+          {total > 1 && renderCard(items[0], total)}
+        </motion.div>
+
+        {/* Navigation */}
+        <div className="container-px mt-8 flex items-center justify-between">
+          <div className="flex gap-2">
+            {items.map((_, k) => (
+              <button
+                key={k}
+                onClick={() => { setCurrent(k); setPaused(true); }}
+                aria-label={`Go to story ${k + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  k === current ? 'w-8 bg-gold' : 'w-3 bg-white/20 hover:bg-white/40'
+                }`}
+              />
+            ))}
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => { prev(); setPaused(true); }}
+              aria-label="Previous story"
+              className="w-11 h-11 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all"
+            >
+              <ChevronRight className="w-5 h-5 rotate-180" />
+            </button>
+            <button
+              onClick={() => { next(); setPaused(true); }}
+              aria-label="Next story"
+              className="w-11 h-11 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
-
       </div>
     </section>
   );
@@ -675,115 +714,106 @@ const testimonialsData: TestimonialItem[] = [
 ];
 
 export function Testimonials({ items = SITE_CONFIG.testimonials }: { items?: TestimonialItem[] }) {
-  const [i, setI] = useState(0);
-  const active = items[i] || items[0];
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = items.length;
+
+  // Auto-advance every 4 seconds
+  useEffect(() => {
+    if (paused || total <= 1) return;
+    const id = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % total);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [paused, total]);
+
+  const prev = () => { setCurrent((p) => (p - 1 + total) % total); setPaused(true); };
+  const next = () => { setCurrent((p) => (p + 1) % total); setPaused(true); };
+  const active = items[current] || items[0];
 
   return (
-    <section id="testimonials" className="py-24 md:py-36 bg-surface/30 border-y border-white/5">
+    <section
+      id="testimonials"
+      className="py-24 md:py-36 bg-surface/30 border-y border-white/5"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div className="container-px">
-        <Reveal>
-          <span className="eyebrow">Testimonials</span>
-        </Reveal>
+        <Reveal><span className="eyebrow">Client Reviews</span></Reveal>
         <Reveal delay={0.1}>
           <h2 className="mt-4 font-display font-black text-4xl sm:text-5xl md:text-6xl max-w-3xl">
             What clients <span className="text-gold-gradient">actually say.</span>
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid lg:grid-cols-[1.2fr_1fr] gap-6">
-          <Reveal>
-            <div className="card-surface p-8 md:p-12 relative min-h-[320px] h-full flex flex-col justify-between">
-              <div>
-                <Quote className="w-10 h-10 text-gold/30 mb-6" />
-                <motion.p
-                  key={i}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-xl md:text-2xl font-display leading-relaxed"
-                >
-                  "{active.testimonialText}"
-                </motion.p>
-              </div>
-              <div className="mt-8 flex items-center justify-between flex-wrap gap-4">
-                <div>
-                  <div className="font-bold">{active.clientName}</div>
-                  <div className="text-sm text-muted-foreground">{active.clientRole}</div>
-                </div>
-                <div className="flex gap-2">
-                  {items.map((_, k) => (
-                    <button
-                      key={k}
-                      onClick={() => setI(k)}
-                      aria-label={`Testimonial ${k + 1}`}
-                      className={`h-1.5 rounded-full transition-all ${k === i ? "w-8 bg-gold" : "w-3 bg-white/20"}`}
-                    />
+        {/* Card slider — all cards visible in a horizontal strip */}
+        <div className="mt-12 relative overflow-hidden">
+          <motion.div
+            className="flex gap-4"
+            animate={{ x: `-${current * 100}%` }}
+            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+          >
+            {items.map((t, idx) => (
+              <div
+                key={t.id || idx}
+                className="card-surface p-7 sm:p-9 flex flex-col justify-between shrink-0 w-full rounded-2xl border border-white/5"
+                style={{ minHeight: 260 }}
+              >
+                {/* Stars */}
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, s) => (
+                    <Star key={s} className="w-4 h-4 fill-gold text-gold" />
                   ))}
                 </div>
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <div className="h-full">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.25, ease: "easeInOut" }}
-                  className="h-full"
-                >
-                  {active.videoUrl ? (
-                    <div className="card-surface p-6 sm:p-8 h-full flex flex-col justify-between border border-white/5">
-                      <div>
-                        <span className="text-xs uppercase tracking-widest text-gold font-bold block mb-4">
-                          Video Testimonial
-                        </span>
-                        <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl">
-                          <video
-                            src={active.videoUrl}
-                            poster={active.thumbnail || undefined}
-                            controls
-                            playsInline
-                            preload="metadata"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="mt-6">
-                          <div className="text-xs uppercase tracking-widest text-gold font-semibold">
-                            {active.transformationSummary}
-                          </div>
-                          <p className="mt-2 text-foreground/75 text-sm leading-relaxed">
-                            Watch {active.clientName}'s journey and results in their own words.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="card-surface p-8 h-full flex flex-col justify-center items-center text-center min-h-[340px] border border-gold/15 shadow-[0_20px_50px_rgba(0,0,0,0.9),_0_0_30px_rgba(212,175,55,0.02)]">
-                      {/* Center Play Icon with Coming Soon overlay */}
-                      <div className="w-16 h-16 rounded-full bg-gold/10 border border-gold/20 grid place-items-center mb-6 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
-                        <div className="w-0 h-0 border-l-[12px] border-l-gold/40 border-y-[8px] border-y-transparent ml-1" />
-                      </div>
-
-                      <span className="text-xs uppercase tracking-widest text-gold font-bold block mb-2">
-                        Video Testimonial
-                      </span>
-
-                      <h4 className="font-display text-xl font-extrabold text-foreground tracking-tight">
-                        Coming Soon
-                      </h4>
-
-                      <p className="mt-3 text-foreground/60 text-sm max-w-sm leading-relaxed">
-                        Client video will be available soon. Continue reading the written
-                        transformation story.
-                      </p>
+                <div>
+                  <Quote className="w-8 h-8 text-gold/20 mb-3" />
+                  <p className="text-lg sm:text-xl font-display leading-relaxed">
+                    "{t.testimonialText}"
+                  </p>
+                </div>
+                <div className="mt-6 pt-5 border-t border-white/8 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center shrink-0">
+                    <span className="text-sm font-black text-gold">{t.clientName.charAt(0)}</span>
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm">{t.clientName}</div>
+                    <div className="text-xs text-muted-foreground">{t.clientRole}</div>
+                  </div>
+                  {t.transformationSummary && (
+                    <div className="ml-auto text-xs text-gold font-semibold text-right max-w-[160px] leading-tight">
+                      {t.transformationSummary}
                     </div>
                   )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </Reveal>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Controls */}
+        <div className="mt-6 flex items-center justify-between">
+          <div className="flex gap-2">
+            {items.map((_, k) => (
+              <button
+                key={k}
+                onClick={() => { setCurrent(k); setPaused(true); }}
+                aria-label={`Review ${k + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  k === current ? 'w-8 bg-gold' : 'w-3 bg-white/20 hover:bg-white/40'
+                }`}
+              />
+            ))}
+          </div>
+          <div className="flex gap-3">
+            <button onClick={prev} aria-label="Previous review"
+              className="w-11 h-11 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all">
+              <ChevronRight className="w-5 h-5 rotate-180" />
+            </button>
+            <button onClick={next} aria-label="Next review"
+              className="w-11 h-11 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all">
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

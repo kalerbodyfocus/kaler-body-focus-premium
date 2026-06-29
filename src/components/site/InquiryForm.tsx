@@ -27,14 +27,14 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     subtitle: "Tell us about yourself.",
     fields: [
       { name: "fullName", label: "Full Name", required: true },
-      { name: "email", label: "Email", type: "email", required: true },
-      { name: "phone", label: "Phone", type: "tel", required: true },
-      { name: "whatsapp", label: "WhatsApp", type: "tel" },
-      { name: "age", label: "Age", type: "number" },
+      { name: "email", label: "Email Address", type: "email", required: true },
+      { name: "phone", label: "Phone Number", type: "tel", required: true },
+      { name: "whatsapp", label: "WhatsApp Number", type: "tel" },
+      { name: "age", label: "How Old Are You?", type: "number" },
       { name: "gender", label: "Gender", options: ["Male", "Female", "Prefer not to say"] },
-      { name: "weight", label: "Weight (kg)", type: "number" },
-      { name: "height", label: "Height (cm)", type: "number" },
-      { name: "location", label: "Location", full: true },
+      { name: "weight", label: "Current Weight (kg)", type: "number" },
+      { name: "height", label: "Current Height (cm)", type: "number" },
+      { name: "location", label: "Where Are You Located?", full: true },
     ],
   },
   {
@@ -43,7 +43,7 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     fields: [
       {
         name: "goal",
-        label: "Primary Goal",
+        label: "What Is Your Primary Goal?",
         options: [
           "Fat Loss",
           "Muscle Gain",
@@ -57,7 +57,7 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
       },
       {
         name: "goalNotes",
-        label: "Anything specific?",
+        label: "Anything Specific About Your Goal?",
         type: "textarea",
         full: true,
         placeholder: "Optional context about your goal...",
@@ -70,42 +70,42 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     fields: [
       {
         name: "experience",
-        label: "Training Experience",
+        label: "What Is Your Training Experience?",
         options: ["None", "Beginner", "Intermediate", "Advanced"],
       },
-      { name: "profession", label: "Profession" },
+      { name: "profession", label: "What Do You Do for Work?" },
       {
         name: "activity",
-        label: "Daily Activity Level",
+        label: "How Active Are You Daily?",
         options: ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"],
       },
       {
         name: "workoutTime",
-        label: "Preferred Workout Time",
+        label: "What Is Your Preferred Workout Time?",
         options: ["Early Morning", "Morning", "Midday", "Evening", "Late Night"],
       },
       {
         name: "diet",
-        label: "Diet Type",
+        label: "Do You Follow a Specific Diet?",
         options: ["No restriction", "Vegetarian", "Vegan", "Pescatarian", "Other"],
       },
       {
         name: "sleep",
-        label: "Sleep Duration",
+        label: "How Many Hours Do You Sleep?",
         options: ["<5 hrs", "5-6 hrs", "7-8 hrs", "9+ hrs"],
       },
-      { name: "medical", label: "Medical Conditions / Injuries", type: "textarea", full: true },
-      { name: "medications", label: "Current Medications", full: true },
+      { name: "medical", label: "Do You Have Any Medical Conditions or Injuries?", type: "textarea", full: true },
+      { name: "medications", label: "Are You Currently on Any Medications?", full: true },
     ],
   },
   {
     title: "Challenges",
     subtitle: "Where you've been stuck.",
     fields: [
-      { name: "struggle", label: "Biggest Fitness Struggle", type: "textarea", full: true },
-      { name: "previous", label: "Why Previous Attempts Failed", type: "textarea", full: true },
-      { name: "motivation", label: "Motivation For Joining", type: "textarea", full: true },
-      { name: "outcome", label: "Expected Outcome", type: "textarea", full: true },
+      { name: "struggle", label: "What Is Your Biggest Fitness Struggle?", type: "textarea", full: true },
+      { name: "previous", label: "Why Have Your Previous Attempts Failed?", type: "textarea", full: true },
+      { name: "motivation", label: "Why Did You Decide to Start Your Fitness Journey Now?", type: "textarea", full: true },
+      { name: "outcome", label: "What Are Your Expected Outcomes from This Coaching Program?", type: "textarea", full: true },
     ],
   },
   {
@@ -114,7 +114,7 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     fields: [
       {
         name: "source",
-        label: "How Did You Heard About Us",
+        label: "How Did You Hear About Us?",
         options: ["Google", "Instagram", "Facebook", "Referral", "Other"],
         full: true,
       },
@@ -127,15 +127,15 @@ const steps: { title: string; subtitle: string; fields: Field[] }[] = [
     fields: [
       {
         name: "duration",
-        label: "Coaching Duration",
+        label: "How Long Would You Like to Commit?",
         options: ["1 month", "3 months", "6 months", "12 months"],
       },
       {
         name: "budget",
-        label: "Budget Readiness",
+        label: "What Is Your Budget Readiness?",
         options: ["Ready to invest", "Need pricing first", "Exploring"],
       },
-      { name: "startDate", label: "Preferred Start Date", type: "date", full: true },
+      { name: "startDate", label: "What Is Your Preferred Start Date?", type: "date", full: true },
     ],
   },
 ];

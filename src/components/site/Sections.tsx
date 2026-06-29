@@ -767,15 +767,31 @@ export function Testimonials({ items = SITE_CONFIG.testimonials }: { items?: Tes
                   <div className="font-bold">{active.clientName}</div>
                   <div className="text-sm text-muted-foreground">{active.clientRole}</div>
                 </div>
-                <div className="flex gap-2">
-                  {items.map((_, k) => (
-                    <button
-                      key={k}
-                      onClick={() => setI(k)}
-                      aria-label={`Testimonial ${k + 1}`}
-                      className={`h-1.5 rounded-full transition-all ${k === i ? "w-8 bg-gold" : "w-3 bg-white/20"}`}
-                    />
-                  ))}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setI((prev) => (prev - 1 + items.length) % items.length)}
+                    aria-label="Previous testimonial"
+                    className="w-8 h-8 rounded-full border border-white/10 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all"
+                  >
+                    <ChevronRight className="w-4 h-4 rotate-180" />
+                  </button>
+                  <div className="flex gap-2">
+                    {items.map((_, k) => (
+                      <button
+                        key={k}
+                        onClick={() => setI(k)}
+                        aria-label={`Testimonial ${k + 1}`}
+                        className={`h-1.5 rounded-full transition-all ${k === i ? "w-8 bg-gold" : "w-3 bg-white/20"}`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setI((prev) => (prev + 1) % items.length)}
+                    aria-label="Next testimonial"
+                    className="w-8 h-8 rounded-full border border-white/10 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             </div>

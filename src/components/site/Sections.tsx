@@ -175,13 +175,15 @@ export function Hero({ settings }: { settings?: SiteSettings }) {
         </motion.div>
       </div>
 
-      <motion.div
+      <motion.a
+        href="#about"
         animate={{ y: [0, 8, 0] }}
         transition={{ repeat: Infinity, duration: 2.2 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground hover:text-gold transition-colors cursor-pointer"
+        aria-label="Scroll to About Coach section"
       >
         Scroll <ChevronDown className="w-4 h-4" />
-      </motion.div>
+      </motion.a>
     </section>
   );
 }

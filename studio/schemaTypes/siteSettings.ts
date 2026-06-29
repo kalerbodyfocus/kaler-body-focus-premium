@@ -7,9 +7,9 @@ export default defineType({
   groups: [
     { name: "general", title: "General Settings" },
     { name: "hero", title: "Hero Section" },
-    { name: "about", title: "About Section" },
-    { name: "personal", title: "1-on-1 Section" },
-    { name: "online", title: "Online Section" },
+    { name: "about", title: "About Coach Section" },
+    { name: "personal", title: "Personal Training Section" },
+    { name: "online", title: "Online Coaching Section" },
     { name: "contact", title: "Contact Section" },
     { name: "form", title: "Application Form" },
   ],
@@ -244,12 +244,12 @@ export default defineType({
       group: "about",
     }),
 
-    // --- 1-on-1 Section ---
+    // --- Personal Training Section ---
     defineField({
       name: "personalImage",
-      title: "Personal Coaching Background Image",
+      title: "Personal Training Background Image",
       type: "image",
-      description: "Background photo for the 1-on-1 coaching section background",
+      description: "Background photo for the Personal Training section",
       options: {
         hotspot: true,
       },
@@ -257,34 +257,34 @@ export default defineType({
     }),
     defineField({
       name: "personalTitle",
-      title: "1-on-1 PT Title",
+      title: "Personal Training Title",
       type: "string",
       description: "e.g., 'Personal Coaching.'",
       group: "personal",
     }),
     defineField({
       name: "personalSubtitle",
-      title: "1-on-1 PT Subtitle",
+      title: "Personal Training Subtitle",
       type: "string",
       description: "e.g., 'Personalized Results.'",
       group: "personal",
     }),
     defineField({
       name: "personalDescription",
-      title: "1-on-1 PT Description",
+      title: "Personal Training Description",
       type: "text",
       group: "personal",
     }),
     defineField({
       name: "personalIncludes",
-      title: "PT: What's Included Bullets",
+      title: "Personal Training: What's Included Bullets",
       type: "array",
       of: [{ type: "string" }],
       group: "personal",
     }),
     defineField({
       name: "personalIdealFor",
-      title: "PT: Ideal For Bullets",
+      title: "Personal Training: Ideal For Bullets",
       type: "array",
       of: [{ type: "string" }],
       group: "personal",

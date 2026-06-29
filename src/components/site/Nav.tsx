@@ -8,13 +8,13 @@ import logoMark from "@/assets/logo-mark.png";
 
 const links = [
   { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#personal", label: "1-on-1 Training" },
+  { href: "#about", label: "About Coach" },
+  { href: "#personal", label: "Personal Training" },
   { href: "#online", label: "Online Coaching" },
-  { href: "#services", label: "Services" },
-  { href: "#transformations", label: "Transformations" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#reviews", label: "Reviews" },
+  { href: "#services", label: "Programs" },
+  { href: "#transformations", label: "Success Stories" },
+  { href: "#reviews", label: "Google Reviews" },
+  { href: "#testimonials", label: "Client Reviews" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
@@ -22,10 +22,9 @@ const links = [
 const LOGO_URL = (import.meta.env.VITE_LOGO_URL as string | undefined) ?? "";
 
 export default function Nav({ settings }: { settings?: SiteSettings }) {
-  const navHeader = settings?.heroPrimaryCta ? "Book Consultation" : SITE_CONFIG.cta.navHeader;
-  const navOpenScreen = settings?.heroPrimaryCta
-    ? "Book Free Consultation"
-    : SITE_CONFIG.cta.navOpenScreen;
+  const navHeader = "Book Free Consultation";
+  const navOpenScreen = "Book Free Consultation";
+
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");

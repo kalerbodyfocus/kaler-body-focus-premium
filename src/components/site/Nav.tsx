@@ -34,16 +34,11 @@ const desktopNav: NavItem[] = [
       { href: "#services", label: "Programs" },
     ],
   },
-  { type: "link",     href: "#transformations", label: "Success Stories" },
-  {
-    type: "dropdown", label: "Reviews",
-    children: [
-      { href: "#reviews",      label: "Google Reviews" },
-      { href: "#testimonials", label: "Client Reviews" },
-    ],
-  },
-  { type: "link", href: "#faq",     label: "FAQ" },
-  { type: "link", href: "#contact", label: "Contact" },
+  { type: "link", href: "#transformations", label: "Success Stories" },
+  { type: "link", href: "#reviews",         label: "Google Reviews" },
+  { type: "link", href: "#testimonials",    label: "Client Reviews" },
+  { type: "link", href: "#faq",             label: "FAQ" },
+  { type: "link", href: "#contact",         label: "Contact" },
 ];
 
 // ─── Small dropdown component ────────────────────────────────────────────────

@@ -1,43 +1,137 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Logo from "./Logo";
-import { SITE_CONFIG } from "@/config/site-config";
 import { SiteSettings } from "@/lib/sanity";
-import logoMark from "@/assets/logo-mark.png";
 
-const links = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About Coach" },
-  { href: "#personal", label: "Personal Training" },
-  { href: "#online", label: "Online Coaching" },
-  { href: "#services", label: "Programs" },
-  { href: "#transformations", label: "Success Stories" },
-  { href: "#reviews", label: "Google Reviews" },
-  { href: "#testimonials", label: "Client Reviews" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+// ─── All anchor sections (used for active tracking & mobile menu) ────────────
+const allSections = [
+  { href: "#home",           label: "Home" },
+  { href: "#about",          label: "About Coach" },
+  { href: "#personal",       label: "Personal Training" },
+  { href: "#online",         label: "Online Coaching" },
+  { href: "#services",       label: "Programs" },
+  { href: "#transformations",label: "Success Stories" },
+  { href: "#reviews",        label: "Google Reviews" },
+  { href: "#testimonials",   label: "Client Reviews" },
+  { href: "#faq",            label: "FAQ" },
+  { href: "#contact",        label: "Contact" },
 ];
 
-const LOGO_URL = (import.meta.env.VITE_LOGO_URL as string | undefined) ?? "";
+// ─── Desktop nav structure (top-level + optional dropdown children) ──────────
+type NavItem =
+  | { type: "link"; href: string; label: string }
+  | { type: "dropdown"; label: string; children: { href: string; label: string }[] };
 
-export default function Nav({ settings }: { settings?: SiteSettings }) {
-  const navHeader = "Book Free Consultation";
-  const navOpenScreen = "Book Free Consultation";
+const desktopNav: NavItem[] = [
+  { type: "link",     href: "#home",            label: "Home" },
+  { type: "link",     href: "#about",           label: "About Coach" },
+  {
+    type: "dropdown", label: "Services",
+    children: [
+      { href: "#personal", label: "Personal Training" },
+      { href: "#online",   label: "Online Coaching" },
+      { href: "#services", label: "Programs" },
+    ],
+  },
+  { type: "link",     href: "#transformations", label: "Success Stories" },
+  {
+    type: "dropdown", label: "Reviews",
+    children: [
+      { href: "#reviews",      label: "Google Reviews" },
+      { href: "#testimonials", label: "Client Reviews" },
+    ],
+  },
+  { type: "link", href: "#faq",     label: "FAQ" },
+  { type: "link", href: "#contact", label: "Contact" },
+];
 
-  const [scrolled, setScrolled] = useState(false);
+// ─── Small dropdown component ────────────────────────────────────────────────
+function Dropdown({
+  label,
+  children,
+  active,
+}: {
+  label: string;
+  children: { href: string; label: string }[];
+  active: string;
+}) {
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const isActive = children.some((c) => c.href === active);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={`flex items-center gap-1 text-sm transition-colors relative ${
+          isActive ? "text-gold" : "text-foreground/75 hover:text-foreground"
+        }`}
+      >
+        {label}
+        <ChevronDown
+          className={`w-3.5 h-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+        {isActive && (
+          <motion.span
+            layoutId="navdot"
+            className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold"
+          />
+        )}
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.97 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 min-w-[176px] bg-surface/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden z-10"
+          >
+            {children.map((c) => (
+              <a
+                key={c.href}
+                href={c.href}
+                onClick={() => setOpen(false)}
+                className={`block px-4 py-3 text-sm transition-colors ${
+                  active === c.href
+                    ? "text-gold bg-gold/8"
+                    : "text-foreground/80 hover:text-foreground hover:bg-white/5"
+                }`}
+              >
+                {c.label}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── Main Nav ────────────────────────────────────────────────────────────────
+export default function Nav({ settings }: { settings?: SiteSettings }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("");
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 30);
-      const sections = links.map((l) => document.querySelector(l.href));
       const y = window.scrollY + 140;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = sections[i] as HTMLElement | null;
+      for (let i = allSections.length - 1; i >= 0; i--) {
+        const el = document.querySelector(allSections[i].href) as HTMLElement | null;
         if (el && el.offsetTop <= y) {
-          setActive(links[i].href);
+          setActive(allSections[i].href);
           break;
         }
       }
@@ -48,56 +142,71 @@ export default function Nav({ settings }: { settings?: SiteSettings }) {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-  }, [open]);
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+  }, [menuOpen]);
 
   return (
     <>
+      {/* ── Desktop / tablet header ── */}
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "py-2.5 sm:py-3 bg-background/75 backdrop-blur-xl border-b border-white/5"
+            ? "py-2.5 sm:py-3 bg-background/80 backdrop-blur-xl border-b border-white/5"
             : "py-3.5 sm:py-5 bg-transparent"
         }`}
       >
-        <div className="container-px flex items-center justify-between gap-6">
+        <div className="container-px flex items-center justify-between gap-4">
+          {/* Logo */}
           <a href="#home" className="flex items-center shrink-0">
             <Logo variant="nav" scrolled={scrolled} />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-7">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className={`text-xs xl:text-sm transition-colors relative ${
-                  active === l.href ? "text-gold" : "text-foreground/75 hover:text-foreground"
-                }`}
-              >
-                {l.label}
-                {active === l.href && (
-                  <motion.span
-                    layoutId="navdot"
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold"
-                  />
-                )}
-              </a>
-            ))}
+          {/* Desktop nav links */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
+            {desktopNav.map((item) =>
+              item.type === "link" ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={`text-sm transition-colors relative ${
+                    active === item.href
+                      ? "text-gold"
+                      : "text-foreground/75 hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                  {active === item.href && (
+                    <motion.span
+                      layoutId="navdot"
+                      className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold"
+                    />
+                  )}
+                </a>
+              ) : (
+                <Dropdown
+                  key={item.label}
+                  label={item.label}
+                  children={item.children}
+                  active={active}
+                />
+              )
+            )}
           </nav>
 
+          {/* CTA + hamburger */}
           <div className="flex items-center gap-3">
             <a
               href="#inquiry"
-              className="hidden md:inline-flex btn-gold btn-gold-hover text-sm !py-2.5 !px-5"
+              className="hidden md:inline-flex btn-gold btn-gold-hover text-sm !py-2.5 !px-5 whitespace-nowrap"
             >
-              {navHeader}
+              Book Free Consultation
             </a>
             <button
-              aria-label="Menu"
-              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+              onClick={() => setMenuOpen(true)}
               className="lg:hidden grid place-items-center w-11 h-11 rounded-full border border-white/15"
             >
               <Menu className="w-5 h-5" />
@@ -106,8 +215,9 @@ export default function Nav({ settings }: { settings?: SiteSettings }) {
         </div>
       </motion.header>
 
+      {/* ── Full-screen mobile menu ── */}
       <AnimatePresence>
-        {open && (
+        {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -117,37 +227,43 @@ export default function Nav({ settings }: { settings?: SiteSettings }) {
             <div className="container-px flex items-center justify-between py-5">
               <Logo variant="nav-mobile" />
               <button
-                aria-label="Close"
-                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+                onClick={() => setMenuOpen(false)}
                 className="grid place-items-center w-11 h-11 rounded-full border border-white/15"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
+
             <nav className="container-px pt-8 flex flex-col gap-1">
-              {links.map((l, i) => (
+              {allSections.map((l, i) => (
                 <motion.a
                   key={l.href}
                   href={l.href}
-                  onClick={() => setOpen(false)}
+                  onClick={() => setMenuOpen(false)}
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.05 + i * 0.04, duration: 0.4 }}
-                  className="text-4xl sm:text-5xl font-display font-bold py-3 border-b border-white/5 flex justify-between items-center"
+                  className={`text-3xl sm:text-4xl font-display font-bold py-3 border-b border-white/5 flex justify-between items-center ${
+                    active === l.href ? "text-gold" : ""
+                  }`}
                 >
                   <span>{l.label}</span>
-                  <span className="text-xs text-muted-foreground font-sans">0{i + 1}</span>
+                  <span className="text-xs text-muted-foreground font-sans">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                 </motion.a>
               ))}
+
               <motion.a
                 href="#inquiry"
-                onClick={() => setOpen(false)}
+                onClick={() => setMenuOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.5 }}
                 className="btn-gold btn-gold-hover mt-8 self-start"
               >
-                {navOpenScreen}
+                Book Free Consultation
               </motion.a>
             </nav>
           </motion.div>

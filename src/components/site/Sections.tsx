@@ -865,19 +865,43 @@ export function Testimonials({ items = SITE_CONFIG.testimonials }: { items?: Tes
 }
 
 
-export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSettings; googleReviews?: GoogleReview[] }) {
-  const AmpIframe = "amp-iframe" as ElementType;
-  const widgetId = settings?.googleReviewsWidgetId || SITE_CONFIG.googleReviewsWidgetId || import.meta.env.VITE_TRUSTINDEX_WIDGET_ID;
-  const widgetUrl =
-    settings?.googleReviewsWidgetUrl || SITE_CONFIG.googleReviewsWidgetUrl || import.meta.env.VITE_TRUSTINDEX_WIDGET_URL;
+export function Reviews({ googleReviews = [] }: { settings?: SiteSettings; googleReviews?: GoogleReview[] }) {
+  const GAP = 16;
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  // Use googleReviews if available, otherwise fall back to mock reviews
+  const mockReviews: GoogleReview[] = [
+    {
+      author: "Alex P.",
+      timeDescription: "A month ago",
+      rating: 5,
+      text: "Best PT in Christchurch. Tailored, professional, results-driven.",
+    },
+    {
+      author: "Mia L.",
+      timeDescription: "2 weeks ago",
+      rating: 5,
+      text: "Patient with beginners. Ranjit makes the gym feel approachable.",
+    },
+    {
+      author: "David T.",
+      timeDescription: "3 months ago",
+      rating: 5,
+      text: "Online coaching is on point. Worth every cent.",
+    },
+    {
+      author: "Emma S.",
+      timeDescription: "5 months ago",
+      rating: 5,
+      text: "Honest, knowledgeable, and genuinely invested in your progress.",
+    },
+  ];
+
+  const activeReviews = googleReviews && googleReviews.length > 0 ? googleReviews : mockReviews;
 
   // Carousel slider state
   const [currentPage, setCurrentPage] = useState(0);
   const [paused, setPaused] = useState(false);
-  const GAP = 16;
-  const total = googleReviews.length;
+  const total = activeReviews.length;
   const totalPages = total;
 
   // Auto-advance reviews page every 4.5 seconds
@@ -891,39 +915,6 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
 
   const prevPage = () => setCurrentPage((p) => (p - 1 + totalPages) % totalPages);
   const nextPage = () => setCurrentPage((p) => (p + 1) % totalPages);
-
-  useEffect(() => {
-    if (!widgetId || !containerRef.current || (googleReviews && googleReviews.length > 0)) return;
-
-    // Clear previous contents
-    containerRef.current.innerHTML = "";
-
-    const isElfsight = widgetId.includes("-");
-
-    if (isElfsight) {
-      // Create Elfsight widget container
-      const elfsightDiv = document.createElement("div");
-      elfsightDiv.className = `elfsight-app-${widgetId}`;
-      elfsightDiv.setAttribute("data-elfsight-app-lazy", "");
-      containerRef.current.appendChild(elfsightDiv);
-
-      // Load Elfsight platform script globally if not already loaded
-      if (!document.querySelector('script[src*="static.elfsight.com"]')) {
-        const script = document.createElement("script");
-        script.src = "https://static.elfsight.com/platform/platform.js";
-        script.defer = true;
-        script.async = true;
-        document.body.appendChild(script);
-      }
-    } else {
-      // Create and append Trustindex loader script
-      const script = document.createElement("script");
-      script.src = `https://cdn.trustindex.io/loader.js?${widgetId}`;
-      script.defer = true;
-      script.async = true;
-      containerRef.current.appendChild(script);
-    }
-  }, [widgetId, googleReviews]);
 
   return (
     <section 
@@ -971,167 +962,111 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
             </div>
           </Reveal>
           <div className="w-full">
-            {googleReviews && googleReviews.length > 0 ? (
-              <div className="relative overflow-hidden px-4">
-                <div className="overflow-hidden">
-                  <motion.div
-                    className="flex [--translate-amount:calc(100%+16px)] sm:[--translate-amount:calc(50%+8px)]"
-                    animate={{ x: `calc(-${currentPage} * var(--translate-amount))` }}
-                    transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ gap: GAP }}
-                  >
-                    {googleReviews.map((r, k) => (
-                      <div
-                        key={k}
-                        className="bg-[#181818] p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300 relative w-full sm:w-[calc((100%-16px)/2)] sm:min-w-[calc((100%-16px)/2)]"
-                        style={{
-                          minHeight: 200,
-                        }}
-                      >
-                        <div>
-                          {/* Google G icon in top right */}
-                          <div className="absolute top-5 right-5">
-                            <svg viewBox="0 0 24 24" className="w-4 h-4">
-                              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                            </svg>
-                          </div>
-
-                          <div className="flex items-center gap-2.5 mb-3.5">
-                            {r.avatar ? (
-                              <img src={r.avatar} alt={r.author} className="w-8 h-8 rounded-full object-cover" />
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gold uppercase">
-                                {r.author ? r.author[0] : "A"}
-                              </div>
-                            )}
-                            <div>
-                              <div className="text-[13.5px] font-bold text-white leading-none">{r.author}</div>
-                              <div className="text-[9.5px] text-muted-foreground mt-1">{r.timeDescription}</div>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-1.5 mb-2.5">
-                            <div className="flex gap-0.5">
-                              {Array.from({ length: r.rating }).map((_, i) => (
-                                <Star key={i} className="w-3 h-3 fill-gold text-gold" />
-                              ))}
-                            </div>
-                            {/* Blue Verified Badge */}
-                            <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#4285F4] text-white shrink-0">
-                              <svg className="w-2 h-2 fill-current" viewBox="0 0 20 20">
-                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                              </svg>
-                            </span>
-                          </div>
-
-                          <p className="text-[13px] text-foreground/80 leading-relaxed font-normal line-clamp-4">
-                            "{r.text}"
-                          </p>
-                          {r.text && r.text.length > 120 && (
-                            <span className="text-[11px] text-muted-foreground mt-1.5 block cursor-pointer hover:text-white transition-colors">
-                              Read more
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </motion.div>
-                </div>
-
-                {/* Overlapping Navigation Chevrons */}
-                {totalPages > 1 && (
-                  <>
-                    <button
-                      onClick={() => { prevPage(); setPaused(true); }}
-                      aria-label="Previous page"
-                      className="hidden sm:grid absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md place-items-center hover:bg-white hover:scale-105 transition-all animate-fade-in"
-                    >
-                      <ChevronRight className="w-4 h-4 rotate-180" />
-                    </button>
-                    <button
-                      onClick={() => { nextPage(); setPaused(true); }}
-                      aria-label="Next page"
-                      className="hidden sm:grid absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md place-items-center hover:bg-white hover:scale-105 transition-all animate-fade-in"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </>
-                )}
-
-                {/* Page dots at bottom */}
-                {totalPages > 1 && (
-                  <div className="mt-6 flex justify-center gap-2">
-                    {[...Array(totalPages)].map((_, k) => (
-                      <button
-                        key={k}
-                        onClick={() => { setCurrentPage(k); setPaused(true); }}
-                        aria-label={`Go to page ${k + 1}`}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
-                          k === currentPage ? 'w-8 bg-gold' : 'w-3 bg-white/20 hover:bg-white/40'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : widgetId ? (
-              <Reveal>
-                <div ref={containerRef} className="w-full min-h-[150px]" />
-              </Reveal>
-            ) : widgetUrl ? (
-              <Reveal>
-                <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A0A]/50">
-                  <AmpIframe
-                    src={widgetUrl}
-                    width="auto"
-                    height="400"
-                    layout="fixed-height"
-                    sandbox="allow-scripts allow-same-origin allow-popups"
-                    className="w-full min-h-[400px] border-0"
-                  >
+            <div className="relative overflow-hidden px-4">
+              <div className="overflow-hidden">
+                <motion.div
+                  className="flex [--translate-amount:calc(100%+16px)] sm:[--translate-amount:calc(50%+8px)]"
+                  animate={{ x: `calc(-${currentPage} * var(--translate-amount))` }}
+                  transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ gap: GAP }}
+                >
+                  {activeReviews.map((r, k) => (
                     <div
-                      {...{ placeholder: "" }}
-                      className="absolute inset-0 grid place-items-center text-sm text-muted-foreground bg-black/90"
+                      key={k}
+                      className="bg-[#181818] p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300 relative w-full sm:w-[calc((100%-16px)/2)] sm:min-w-[calc((100%-16px)/2)]"
+                      style={{
+                        minHeight: 200,
+                      }}
                     >
-                      Loading Google Reviews...
-                    </div>
-                  </AmpIframe>
-                </div>
-              </Reveal>
-            ) : (
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  {
-                    n: "Alex P.",
-                    q: "Best PT in Christchurch. Tailored, professional, results-driven.",
-                  },
-                  {
-                    n: "Mia L.",
-                    q: "Patient with beginners. Ranjit makes the gym feel approachable.",
-                  },
-                  { n: "David T.", q: "Online coaching is on point. Worth every cent." },
-                  {
-                    n: "Emma S.",
-                    q: "Honest, knowledgeable, and genuinely invested in your progress.",
-                  },
-                ].map((r, k) => (
-                  <Reveal key={k} delay={0.05 * k}>
-                    <div className="bg-black p-6 border border-white/5 rounded-2xl">
-                      <div className="flex gap-0.5 mb-3">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />
-                        ))}
+                      <div>
+                        {/* Google G icon in top right */}
+                        <div className="absolute top-5 right-5">
+                          <svg viewBox="0 0 24 24" className="w-4 h-4">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                          </svg>
+                        </div>
+
+                        <div className="flex items-center gap-2.5 mb-3.5">
+                          {r.avatar ? (
+                            <img src={r.avatar} alt={r.author} className="w-8 h-8 rounded-full object-cover" />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gold uppercase">
+                              {r.author ? r.author[0] : "A"}
+                            </div>
+                          )}
+                          <div>
+                            <div className="text-[13.5px] font-bold text-white leading-none">{r.author}</div>
+                            <div className="text-[9.5px] text-muted-foreground mt-1">{r.timeDescription || "1 month ago"}</div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 mb-2.5">
+                          <div className="flex gap-0.5">
+                            {Array.from({ length: r.rating }).map((_, i) => (
+                              <Star key={i} className="w-3 h-3 fill-gold text-gold" />
+                            ))}
+                          </div>
+                          {/* Blue Verified Badge */}
+                          <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#4285F4] text-white shrink-0">
+                            <svg className="w-2 h-2 fill-current" viewBox="0 0 20 20">
+                              <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                            </svg>
+                          </span>
+                        </div>
+
+                        <p className="text-[13px] text-foreground/80 leading-relaxed font-normal line-clamp-4">
+                          "{r.text}"
+                        </p>
+                        {r.text && r.text.length > 120 && (
+                          <span className="text-[11px] text-muted-foreground mt-1.5 block cursor-pointer hover:text-white transition-colors">
+                            Read more
+                          </span>
+                        )}
                       </div>
-                      <p className="text-sm text-foreground/80 leading-relaxed">"{r.q}"</p>
-                      <div className="mt-4 text-xs text-muted-foreground">— {r.n}</div>
                     </div>
-                  </Reveal>
-                ))}
+                  ))}
+                </motion.div>
               </div>
-            )}
+
+              {/* Overlapping Navigation Chevrons */}
+              {totalPages > 1 && (
+                <>
+                  <button
+                    onClick={() => { prevPage(); setPaused(true); }}
+                    aria-label="Previous page"
+                    className="hidden sm:grid absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md place-items-center hover:bg-white hover:scale-105 transition-all animate-fade-in"
+                  >
+                    <ChevronRight className="w-4 h-4 rotate-180" />
+                  </button>
+                  <button
+                    onClick={() => { nextPage(); setPaused(true); }}
+                    aria-label="Next page"
+                    className="hidden sm:grid absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md place-items-center hover:bg-white hover:scale-105 transition-all animate-fade-in"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+
+              {/* Page dots at bottom */}
+              {totalPages > 1 && (
+                <div className="mt-6 flex justify-center gap-2">
+                  {[...Array(totalPages)].map((_, k) => (
+                    <button
+                      key={k}
+                      onClick={() => { setCurrentPage(k); setPaused(true); }}
+                      aria-label={`Go to page ${k + 1}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        k === currentPage ? 'w-8 bg-gold' : 'w-3 bg-white/20 hover:bg-white/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -965,7 +965,7 @@ export function Reviews({ googleReviews = [] }: { settings?: SiteSettings; googl
             <div className="relative overflow-hidden px-4">
               <div className="overflow-hidden">
                 <motion.div
-                  className="flex [--translate-amount:calc(100%+16px)] sm:[--translate-amount:calc(50%+8px)]"
+                  className="flex w-full [--translate-amount:calc(100%+16px)] sm:[--translate-amount:calc(50%+8px)]"
                   animate={{ x: `calc(-${currentPage} * var(--translate-amount))` }}
                   transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
                   style={{ gap: GAP }}

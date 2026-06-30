@@ -873,6 +873,41 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
 
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Carousel slider state
+  const [currentPage, setCurrentPage] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(2);
+  const GAP = 16;
+  const total = googleReviews.length;
+
+  useEffect(() => {
+    if (total === 0) return;
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setVisibleCount(2); // Show 2 reviews on desktop
+      } else {
+        setVisibleCount(1); // Show 1 on tablet/mobile
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [total]);
+
+  const totalPages = Math.ceil(total / visibleCount);
+
+  // Auto-advance reviews page every 4.5 seconds
+  useEffect(() => {
+    if (paused || totalPages <= 1) return;
+    const id = setInterval(() => {
+      setCurrentPage((prev) => (prev + 1) % totalPages);
+    }, 4500);
+    return () => clearInterval(id);
+  }, [paused, totalPages]);
+
+  const prevPage = () => setCurrentPage((p) => (p - 1 + totalPages) % totalPages);
+  const nextPage = () => setCurrentPage((p) => (p + 1) % totalPages);
+
   useEffect(() => {
     if (!widgetId || !containerRef.current || (googleReviews && googleReviews.length > 0)) return;
 
@@ -907,7 +942,14 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
   }, [widgetId, googleReviews]);
 
   return (
-    <section id="reviews" className="py-24 md:py-36">
+    <section 
+      id="reviews" 
+      className="py-24 md:py-36 overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
       <div className="container-px">
         <div className="grid lg:grid-cols-[1fr_2fr] gap-10 items-start">
           <Reveal>
@@ -944,38 +986,87 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
           </Reveal>
           <div className="w-full">
             {googleReviews && googleReviews.length > 0 ? (
-              <div className="grid sm:grid-cols-2 gap-4">
-                {googleReviews.map((r, k) => (
-                  <Reveal key={k} delay={0.05 * k}>
-                    <div className="card-surface p-6 flex flex-col justify-between h-full">
-                      <div>
-                        <div className="flex items-center gap-3 mb-3">
-                          {r.avatar ? (
-                            <img src={r.avatar} alt={r.author} className="w-8 h-8 rounded-full object-cover" />
-                          ) : (
-                            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[11px] font-bold text-gold uppercase">
-                              {r.author ? r.author[0] : "A"}
+              <div className="relative overflow-hidden">
+                <div className="overflow-hidden">
+                  <motion.div
+                    className="flex"
+                    animate={{ x: `calc(-${currentPage * 100}% - ${currentPage * GAP}px)` }}
+                    transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ gap: GAP }}
+                  >
+                    {googleReviews.map((r, k) => (
+                      <div
+                        key={k}
+                        className="card-surface p-6 flex flex-col justify-between shrink-0 border border-white/5 hover:border-gold/30 transition-colors duration-300"
+                        style={{
+                          width: `calc((100% - ${(visibleCount - 1) * GAP}px) / ${visibleCount})`,
+                          minWidth: visibleCount === 1 ? "100%" : "290px",
+                          minHeight: 220,
+                        }}
+                      >
+                        <div>
+                          <div className="flex items-center gap-3 mb-4">
+                            {r.avatar ? (
+                              <img src={r.avatar} alt={r.author} className="w-8 h-8 rounded-full object-cover" />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[11px] font-bold text-gold uppercase">
+                                {r.author ? r.author[0] : "A"}
+                              </div>
+                            )}
+                            <div>
+                              <div className="text-sm font-semibold text-white leading-none">{r.author}</div>
+                              <div className="text-[10px] text-muted-foreground mt-1.5">{r.timeDescription}</div>
                             </div>
-                          )}
-                          <div>
-                            <div className="text-sm font-semibold text-foreground leading-none">{r.author}</div>
-                            <div className="text-[10px] text-muted-foreground mt-1.5">{r.timeDescription}</div>
                           </div>
+                          <div className="flex gap-0.5 mb-3">
+                            {Array.from({ length: r.rating }).map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />
+                            ))}
+                          </div>
+                          <p className="text-sm text-foreground/80 leading-relaxed font-medium">"{r.text}"</p>
                         </div>
-                        <div className="flex gap-0.5 mb-3">
-                          {Array.from({ length: r.rating }).map((_, i) => (
-                            <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />
-                          ))}
+                        <div className="mt-4 flex items-center gap-1.5 text-[10px] text-muted-foreground pt-3 border-t border-white/5">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          Verified Google Review
                         </div>
-                        <p className="text-sm text-foreground/80 leading-relaxed">"{r.text}"</p>
                       </div>
-                      <div className="mt-4 flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        Verified Google Review
-                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+
+                {/* Carousel Controls */}
+                {totalPages > 1 && (
+                  <div className="mt-8 flex items-center justify-between">
+                    <div className="flex gap-2">
+                      {[...Array(totalPages)].map((_, k) => (
+                        <button
+                          key={k}
+                          onClick={() => { setCurrentPage(k); setPaused(true); }}
+                          aria-label={`Go to page ${k + 1}`}
+                          className={`h-1.5 rounded-full transition-all duration-300 ${
+                            k === currentPage ? 'w-8 bg-gold' : 'w-3 bg-white/20 hover:bg-white/40'
+                          }`}
+                        />
+                      ))}
                     </div>
-                  </Reveal>
-                ))}
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => { prevPage(); setPaused(true); }}
+                        aria-label="Previous page"
+                        className="w-10 h-10 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all text-white"
+                      >
+                        <ChevronRight className="w-4.5 h-4.5 rotate-180" />
+                      </button>
+                      <button
+                        onClick={() => { nextPage(); setPaused(true); }}
+                        aria-label="Next page"
+                        className="w-10 h-10 rounded-full border border-white/15 grid place-items-center hover:border-gold/50 hover:bg-gold/5 transition-all text-white"
+                      >
+                        <ChevronRight className="w-4.5 h-4.5" />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : widgetId ? (
               <Reveal>

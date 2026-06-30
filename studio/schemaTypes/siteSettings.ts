@@ -52,6 +52,20 @@ export default defineType({
       group: "general",
     }),
     defineField({
+      name: "googleReviewsWidgetId",
+      title: "Google Reviews Widget ID (Trustindex)",
+      type: "string",
+      description: "The Trustindex widget ID (e.g., '3af0aa774b6290282176083149d') from the loader.js?ID script",
+      group: "general",
+    }),
+    defineField({
+      name: "googleReviewsWidgetUrl",
+      title: "Google Reviews Widget Iframe URL (Trustindex)",
+      type: "string",
+      description: "Fallback iframe URL from Trustindex (e.g., 'https://cdn.trustindex.io/amp.php?3af0aa774b6290282176083149d')",
+      group: "general",
+    }),
+    defineField({
       name: "trustBarItems",
       title: "Marquee Bullet Points",
       type: "array",

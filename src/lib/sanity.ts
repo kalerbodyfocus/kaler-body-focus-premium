@@ -55,6 +55,8 @@ export interface SiteSettings {
   contactEmail?: string;
   locationText?: string;
   googleBusinessUrl?: string;
+  googleReviewsWidgetId?: string;
+  googleReviewsWidgetUrl?: string;
   heroPrimaryCta?: string;
   heroSecondaryCta?: string;
   freeConsultationAlert?: string;
@@ -288,6 +290,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         contactEmail,
         locationText,
         googleBusinessUrl,
+        googleReviewsWidgetId,
+        googleReviewsWidgetUrl,
         heroPrimaryCta,
         heroSecondaryCta,
         freeConsultationAlert,
@@ -352,6 +356,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       contactEmail: settings.contactEmail || defaults.contactEmail,
       locationText: settings.locationText || defaults.locationText,
       googleBusinessUrl: settings.googleBusinessUrl || defaults.googleBusinessUrl,
+      googleReviewsWidgetId: settings.googleReviewsWidgetId || defaults.googleReviewsWidgetId,
+      googleReviewsWidgetUrl: settings.googleReviewsWidgetUrl || defaults.googleReviewsWidgetUrl,
       heroPrimaryCta: settings.heroPrimaryCta || defaults.heroPrimaryCta,
       heroSecondaryCta: settings.heroSecondaryCta || defaults.heroSecondaryCta,
       freeConsultationAlert: settings.freeConsultationAlert || defaults.freeConsultationAlert,

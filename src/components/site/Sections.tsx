@@ -865,11 +865,11 @@ export function Testimonials({ items = SITE_CONFIG.testimonials }: { items?: Tes
 }
 
 
-export function Reviews() {
+export function Reviews({ settings }: { settings?: SiteSettings }) {
   const AmpIframe = "amp-iframe" as ElementType;
-  const widgetId = SITE_CONFIG.googleReviewsWidgetId || import.meta.env.VITE_TRUSTINDEX_WIDGET_ID;
+  const widgetId = settings?.googleReviewsWidgetId || SITE_CONFIG.googleReviewsWidgetId || import.meta.env.VITE_TRUSTINDEX_WIDGET_ID;
   const widgetUrl =
-    SITE_CONFIG.googleReviewsWidgetUrl || import.meta.env.VITE_TRUSTINDEX_WIDGET_URL;
+    settings?.googleReviewsWidgetUrl || SITE_CONFIG.googleReviewsWidgetUrl || import.meta.env.VITE_TRUSTINDEX_WIDGET_URL;
 
   const containerRef = useRef<HTMLDivElement>(null);
 

@@ -1001,7 +1001,7 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
                     {googleReviews.map((r, k) => (
                       <div
                         key={k}
-                        className="card-surface p-5 flex flex-col justify-between shrink-0 border border-white/5 hover:border-gold/30 transition-colors duration-300"
+                        className="bg-black p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300"
                         style={{
                           width: `calc((100% - ${(visibleCount - 1) * GAP}px) / ${visibleCount})`,
                           minWidth: visibleCount === 1 ? "100%" : "290px",
@@ -1114,7 +1114,7 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
                   },
                 ].map((r, k) => (
                   <Reveal key={k} delay={0.05 * k}>
-                    <div className="card-surface p-6">
+                    <div className="bg-black p-6 border border-white/5 rounded-2xl">
                       <div className="flex gap-0.5 mb-3">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />

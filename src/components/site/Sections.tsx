@@ -975,7 +975,7 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
               <div className="relative overflow-hidden px-4">
                 <div className="overflow-hidden">
                   <motion.div
-                    className="flex lg:[--card-width:330px]"
+                    className="flex lg:[--card-width:calc((100%-16px)/2)]"
                     animate={{ x: `calc(-${currentPage} * (var(--card-width, 100%) + ${GAP}px))` }}
                     transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
                     style={{ gap: GAP, ...({ "--card-width": "100%" } as any) }}

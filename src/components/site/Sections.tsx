@@ -953,34 +953,38 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
       <div className="container-px">
         <div className="grid lg:grid-cols-[1fr_2fr] gap-10 items-start">
           <Reveal>
-            <div>
+            <div className="flex flex-col items-start">
               <span className="eyebrow">Google Reviews</span>
-              <h2 className="mt-4 font-display font-black text-4xl md:text-5xl">
+              <h2 className="mt-4 font-display font-black text-4xl md:text-5xl tracking-tight">
                 Trusted on Google.
               </h2>
-              <div className="mt-6 flex items-end gap-3">
-                <div className="text-6xl font-display font-black text-gold">5.0</div>
-                <div className="mb-2">
+              
+              {/* Premium Google Rating Badge */}
+              <div className="mt-6 flex items-center gap-4 p-4 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-md w-full max-w-[285px]">
+                <div className="text-5xl font-display font-black text-gold leading-none">5.0</div>
+                <div className="flex flex-col gap-1">
                   <div className="flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-gold text-gold" />
                     ))}
                   </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    Based on verified Google reviews
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-extrabold">
+                    Google Rating
                   </div>
                 </div>
               </div>
-              <p className="mt-5 text-foreground/65 text-sm">
-                Verified client feedback from our Google Business Profile.
+
+              <p className="mt-6 text-foreground/60 text-sm leading-relaxed max-w-xs">
+                Verified client feedback from our official Google Business Profile.
               </p>
               <a
                 href={SITE_CONFIG.googleBusinessUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-gold btn-gold-hover mt-6 inline-flex text-xs !py-2.5 !px-5"
+                className="btn-gold btn-gold-hover mt-6 inline-flex items-center gap-2 text-xs !py-3 !px-5"
               >
                 Write or View Reviews
+                <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>
           </Reveal>

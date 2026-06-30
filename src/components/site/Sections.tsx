@@ -975,18 +975,16 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
               <div className="relative overflow-hidden px-4">
                 <div className="overflow-hidden">
                   <motion.div
-                    className="flex [--card-width:100%] sm:[--card-width:calc((100%-16px)/2)]"
-                    animate={{ x: `calc(-${currentPage} * (var(--card-width) + ${GAP}px))` }}
+                    className="flex [--translate-amount:calc(100%+16px)] sm:[--translate-amount:calc(50%+8px)]"
+                    animate={{ x: `calc(-${currentPage} * var(--translate-amount))` }}
                     transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
                     style={{ gap: GAP }}
                   >
                     {googleReviews.map((r, k) => (
                       <div
                         key={k}
-                        className="bg-[#181818] p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300 relative"
+                        className="bg-[#181818] p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300 relative w-full sm:w-[calc((100%-16px)/2)] sm:min-w-[calc((100%-16px)/2)]"
                         style={{
-                          width: "var(--card-width)",
-                          minWidth: "var(--card-width)",
                           minHeight: 200,
                         }}
                       >
@@ -1049,14 +1047,14 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
                     <button
                       onClick={() => { prevPage(); setPaused(true); }}
                       aria-label="Previous page"
-                      className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md grid place-items-center hover:bg-white hover:scale-105 transition-all"
+                      className="hidden sm:grid absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md place-items-center hover:bg-white hover:scale-105 transition-all animate-fade-in"
                     >
                       <ChevronRight className="w-4 h-4 rotate-180" />
                     </button>
                     <button
                       onClick={() => { nextPage(); setPaused(true); }}
                       aria-label="Next page"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md grid place-items-center hover:bg-white hover:scale-105 transition-all"
+                      className="hidden sm:grid absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 text-black shadow-md place-items-center hover:bg-white hover:scale-105 transition-all animate-fade-in"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>

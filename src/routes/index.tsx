@@ -17,7 +17,7 @@ import {
 } from "@/components/site/Sections";
 import { InquiryForm } from "@/components/site/InquiryForm";
 import { getSanityContent } from "@/lib/sanity";
-import ogImage from "@/assets/logo-full.png";
+import ogImage from "@/assets/logo-full(1).png";
 
 
 export const Route = createFileRoute("/")({

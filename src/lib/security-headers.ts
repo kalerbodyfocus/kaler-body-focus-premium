@@ -35,8 +35,8 @@ export function applySecurityHeaders(response: Response): Response {
   // Allows: our own origin, Sanity CDN, Google Fonts, Trustindex, WhatsApp, Facebook, Instagram
   const csp = [
     "default-src 'self'",
-    // Scripts: self + Trustindex widget
-    "script-src 'self' 'unsafe-inline' https://cdn.trustindex.io https://www.google.com https://www.gstatic.com",
+    // Scripts: self + Trustindex widget + Elfsight
+    "script-src 'self' 'unsafe-inline' https://cdn.trustindex.io https://static.elfsight.com https://*.elfsight.com https://www.google.com https://www.gstatic.com",
     // Styles: self + Google Fonts + unsafe-inline (for TailwindCSS/framer-motion inline styles)
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     // Fonts: self + Google Fonts
@@ -45,10 +45,10 @@ export function applySecurityHeaders(response: Response): Response {
     "img-src 'self' data: blob: https://cdn.sanity.io https://*.sanity.io https:",
     // Media: self + Sanity CDN
     "media-src 'self' https://cdn.sanity.io https://*.sanity.io blob:",
-    // Frames: Trustindex for reviews iframe, YouTube
-    "frame-src https://cdn.trustindex.io https://www.youtube.com https://www.google.com",
-    // Connect: self + Sanity API + Resend + WhatsApp
-    "connect-src 'self' https://*.sanity.io https://api.sanity.io https://api.resend.com https://wa.me wss:",
+    // Frames: Trustindex for reviews iframe, YouTube, Elfsight
+    "frame-src https://cdn.trustindex.io https://static.elfsight.com https://*.elfsight.com https://www.youtube.com https://www.google.com",
+    // Connect: self + Sanity API + Resend + WhatsApp + Elfsight
+    "connect-src 'self' https://*.sanity.io https://api.sanity.io https://api.resend.com https://*.elfsight.com https://wa.me wss:",
     // Object: none (no plugins)
     "object-src 'none'",
     // Base URI: self only

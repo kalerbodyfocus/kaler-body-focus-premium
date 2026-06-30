@@ -879,13 +879,31 @@ export function Reviews({ settings }: { settings?: SiteSettings }) {
     // Clear previous contents
     containerRef.current.innerHTML = "";
 
-    // Create and append the script
-    const script = document.createElement("script");
-    script.src = `https://cdn.trustindex.io/loader.js?${widgetId}`;
-    script.defer = true;
-    script.async = true;
+    const isElfsight = widgetId.includes("-");
 
-    containerRef.current.appendChild(script);
+    if (isElfsight) {
+      // Create Elfsight widget container
+      const elfsightDiv = document.createElement("div");
+      elfsightDiv.className = `elfsight-app-${widgetId}`;
+      elfsightDiv.setAttribute("data-elfsight-app-lazy", "");
+      containerRef.current.appendChild(elfsightDiv);
+
+      // Load Elfsight platform script globally if not already loaded
+      if (!document.querySelector('script[src*="static.elfsight.com"]')) {
+        const script = document.createElement("script");
+        script.src = "https://static.elfsight.com/platform/platform.js";
+        script.defer = true;
+        script.async = true;
+        document.body.appendChild(script);
+      }
+    } else {
+      // Create and append Trustindex loader script
+      const script = document.createElement("script");
+      script.src = `https://cdn.trustindex.io/loader.js?${widgetId}`;
+      script.defer = true;
+      script.async = true;
+      containerRef.current.appendChild(script);
+    }
   }, [widgetId]);
 
   return (

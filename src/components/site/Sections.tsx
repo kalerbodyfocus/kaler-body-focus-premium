@@ -876,25 +876,9 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
   // Carousel slider state
   const [currentPage, setCurrentPage] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(2);
   const GAP = 16;
   const total = googleReviews.length;
-
-  useEffect(() => {
-    if (total === 0) return;
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setVisibleCount(2); // Show 2 reviews on desktop
-      } else {
-        setVisibleCount(1); // Show 1 on tablet/mobile
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [total]);
-
-  const totalPages = Math.ceil(total / visibleCount);
+  const totalPages = total;
 
   // Auto-advance reviews page every 4.5 seconds
   useEffect(() => {
@@ -993,18 +977,18 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
               <div className="relative overflow-hidden">
                 <div className="overflow-hidden">
                   <motion.div
-                    className="flex"
-                    animate={{ x: `calc(-${currentPage * 100}% - ${currentPage * GAP}px)` }}
+                    className="flex lg:[--card-width:330px]"
+                    animate={{ x: `calc(-${currentPage} * (var(--card-width, 100%) + ${GAP}px))` }}
                     transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ gap: GAP }}
+                    style={{ gap: GAP, ...({ "--card-width": "100%" } as any) }}
                   >
                     {googleReviews.map((r, k) => (
                       <div
                         key={k}
                         className="bg-black p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300"
                         style={{
-                          width: `calc((100% - ${(visibleCount - 1) * GAP}px) / ${visibleCount})`,
-                          minWidth: visibleCount === 1 ? "100%" : "290px",
+                          width: "var(--card-width, 100%)",
+                          minWidth: "var(--card-width, 100%)",
                           minHeight: 180,
                         }}
                       >

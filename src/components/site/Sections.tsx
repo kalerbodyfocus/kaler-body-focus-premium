@@ -973,7 +973,7 @@ export function Reviews({ googleReviews = [] }: { settings?: SiteSettings; googl
                   {activeReviews.map((r, k) => (
                     <div
                       key={k}
-                      className="bg-[#181818] p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300 relative w-full sm:w-[calc((100%-16px)/2)] sm:min-w-[calc((100%-16px)/2)]"
+                      className="bg-[#181818] p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300 relative w-full min-w-full sm:w-[calc((100%-16px)/2)] sm:min-w-[calc((100%-16px)/2)]"
                       style={{
                         minHeight: 200,
                       }}

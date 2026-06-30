@@ -1001,35 +1001,35 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
                     {googleReviews.map((r, k) => (
                       <div
                         key={k}
-                        className="card-surface p-6 flex flex-col justify-between shrink-0 border border-white/5 hover:border-gold/30 transition-colors duration-300"
+                        className="card-surface p-5 flex flex-col justify-between shrink-0 border border-white/5 hover:border-gold/30 transition-colors duration-300"
                         style={{
                           width: `calc((100% - ${(visibleCount - 1) * GAP}px) / ${visibleCount})`,
                           minWidth: visibleCount === 1 ? "100%" : "290px",
-                          minHeight: 220,
+                          minHeight: 185,
                         }}
                       >
                         <div>
-                          <div className="flex items-center gap-3 mb-4">
+                          <div className="flex items-center gap-2.5 mb-3.5">
                             {r.avatar ? (
-                              <img src={r.avatar} alt={r.author} className="w-8 h-8 rounded-full object-cover" />
+                              <img src={r.avatar} alt={r.author} className="w-7 h-7 rounded-full object-cover" />
                             ) : (
-                              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[11px] font-bold text-gold uppercase">
+                              <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-gold uppercase">
                                 {r.author ? r.author[0] : "A"}
                               </div>
                             )}
                             <div>
-                              <div className="text-sm font-semibold text-white leading-none">{r.author}</div>
-                              <div className="text-[10px] text-muted-foreground mt-1.5">{r.timeDescription}</div>
+                              <div className="text-[13px] font-semibold text-white leading-none">{r.author}</div>
+                              <div className="text-[9px] text-muted-foreground mt-1">{r.timeDescription}</div>
                             </div>
                           </div>
-                          <div className="flex gap-0.5 mb-3">
+                          <div className="flex gap-0.5 mb-2.5">
                             {Array.from({ length: r.rating }).map((_, i) => (
-                              <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />
+                              <Star key={i} className="w-3 h-3 fill-gold text-gold" />
                             ))}
                           </div>
-                          <p className="text-sm text-foreground/80 leading-relaxed font-medium">"{r.text}"</p>
+                          <p className="text-[13px] text-foreground/80 leading-relaxed font-medium">"{r.text}"</p>
                         </div>
-                        <div className="mt-4 flex items-center gap-1.5 text-[10px] text-muted-foreground pt-3 border-t border-white/5">
+                        <div className="mt-3 flex items-center gap-1.5 text-[9px] text-muted-foreground pt-2.5 border-t border-white/5">
                           <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
                           Verified Google Review
                         </div>

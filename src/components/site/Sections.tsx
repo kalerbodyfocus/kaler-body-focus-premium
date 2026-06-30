@@ -876,23 +876,14 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
   // Carousel slider state
   const [currentPage, setCurrentPage] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(2);
+  const [visibleCount, setVisibleCount] = useState(1);
   const GAP = 16;
   const total = googleReviews.length;
 
   useEffect(() => {
-    if (total === 0) return;
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setVisibleCount(2); // Show 2 reviews on desktop
-      } else {
-        setVisibleCount(1); // Show 1 on tablet/mobile
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [total]);
+    // Always show 1 review at a time to enable sliding navigation buttons
+    setVisibleCount(1);
+  }, []);
 
   const totalPages = Math.ceil(total / visibleCount);
 

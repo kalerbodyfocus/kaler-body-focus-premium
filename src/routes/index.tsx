@@ -63,7 +63,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Page() {
-  const { faqs, testimonials, transformations, services, settings } = Route.useLoaderData();
+  const { faqs, testimonials, transformations, services, settings, googleReviews } = Route.useLoaderData();
 
   return (
     <main className="bg-background text-foreground">
@@ -76,7 +76,7 @@ function Page() {
       <Online settings={settings} />
       <Services items={services} />
       <Transformations items={transformations} />
-      <Reviews settings={settings} />
+      <Reviews settings={settings} googleReviews={googleReviews} />
       <Testimonials items={testimonials} />
       <InquiryForm settings={settings} />
       <FAQ items={faqs} />

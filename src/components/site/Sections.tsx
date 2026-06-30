@@ -26,7 +26,7 @@ import { Reveal, Counter } from "./Reveal";
 import { WHATSAPP, CONTACT_EMAIL, FACEBOOK_URL, INSTAGRAM_URL } from "./Floating";
 import Logo from "./Logo";
 import { SITE_CONFIG } from "@/config/site-config";
-import { SiteSettings, TestimonialItem, TransformationItem } from "@/lib/sanity";
+import { SiteSettings, TestimonialItem, TransformationItem, GoogleReview } from "@/lib/sanity";
 import hero from "@/assets/hero.jpg";
 import founder from "@/assets/founder.jpg";
 import gym from "@/assets/gym.jpg";
@@ -865,7 +865,7 @@ export function Testimonials({ items = SITE_CONFIG.testimonials }: { items?: Tes
 }
 
 
-export function Reviews({ settings }: { settings?: SiteSettings }) {
+export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSettings; googleReviews?: GoogleReview[] }) {
   const AmpIframe = "amp-iframe" as ElementType;
   const widgetId = settings?.googleReviewsWidgetId || SITE_CONFIG.googleReviewsWidgetId || import.meta.env.VITE_TRUSTINDEX_WIDGET_ID;
   const widgetUrl =
@@ -874,7 +874,7 @@ export function Reviews({ settings }: { settings?: SiteSettings }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!widgetId || !containerRef.current) return;
+    if (!widgetId || !containerRef.current || (googleReviews && googleReviews.length > 0)) return;
 
     // Clear previous contents
     containerRef.current.innerHTML = "";
@@ -904,7 +904,7 @@ export function Reviews({ settings }: { settings?: SiteSettings }) {
       script.async = true;
       containerRef.current.appendChild(script);
     }
-  }, [widgetId]);
+  }, [widgetId, googleReviews]);
 
   return (
     <section id="reviews" className="py-24 md:py-36">
@@ -943,7 +943,41 @@ export function Reviews({ settings }: { settings?: SiteSettings }) {
             </div>
           </Reveal>
           <div className="w-full">
-            {widgetId ? (
+            {googleReviews && googleReviews.length > 0 ? (
+              <div className="grid sm:grid-cols-2 gap-4">
+                {googleReviews.map((r, k) => (
+                  <Reveal key={k} delay={0.05 * k}>
+                    <div className="card-surface p-6 flex flex-col justify-between h-full">
+                      <div>
+                        <div className="flex items-center gap-3 mb-3">
+                          {r.avatar ? (
+                            <img src={r.avatar} alt={r.author} className="w-8 h-8 rounded-full object-cover" />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[11px] font-bold text-gold uppercase">
+                              {r.author ? r.author[0] : "A"}
+                            </div>
+                          )}
+                          <div>
+                            <div className="text-sm font-semibold text-foreground leading-none">{r.author}</div>
+                            <div className="text-[10px] text-muted-foreground mt-1.5">{r.timeDescription}</div>
+                          </div>
+                        </div>
+                        <div className="flex gap-0.5 mb-3">
+                          {Array.from({ length: r.rating }).map((_, i) => (
+                            <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />
+                          ))}
+                        </div>
+                        <p className="text-sm text-foreground/80 leading-relaxed">"{r.text}"</p>
+                      </div>
+                      <div className="mt-4 flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        Verified Google Review
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            ) : widgetId ? (
               <Reveal>
                 <div ref={containerRef} className="w-full min-h-[150px]" />
               </Reveal>

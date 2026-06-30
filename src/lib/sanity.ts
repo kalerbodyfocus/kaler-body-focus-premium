@@ -49,6 +49,15 @@ export interface ServiceItem {
   description: string;
 }
 
+// Google Review interface
+export interface GoogleReview {
+  author: string;
+  avatar: string;
+  rating: number;
+  timeDescription: string;
+  text: string;
+}
+
 // Site Settings interface
 export interface SiteSettings {
   whatsAppNumber?: string;
@@ -123,6 +132,7 @@ export interface PageContent {
   transformations: TransformationItem[];
   services: ServiceItem[];
   settings: SiteSettings;
+  googleReviews: GoogleReview[];
 }
 
 // 1. Fetch FAQs
@@ -420,7 +430,60 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   }
 }
 
-// 6. Consolidated fetching function
+// 6. Fetch Google Reviews from Places API (with server-side caching)
+let cachedReviews: GoogleReview[] | null = null;
+let cacheExpiry = 0;
+
+export async function getGoogleReviews(): Promise<GoogleReview[]> {
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY || import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
+  const placeId = process.env.GOOGLE_PLACE_ID || import.meta.env.VITE_GOOGLE_PLACE_ID;
+
+  if (!apiKey || !placeId) {
+    return [];
+  }
+
+  const now = Date.now();
+  if (cachedReviews && now < cacheExpiry) {
+    return cachedReviews;
+  }
+
+  try {
+    const url = `https://places.googleapis.com/v1/places/${placeId}?fields=reviews,rating,userRatingCount&key=${apiKey}`;
+    const res = await fetch(url, {
+      headers: {
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "reviews,rating,userRatingCount"
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error(`Google Places API returned status ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (!data.reviews || !Array.isArray(data.reviews)) {
+      return [];
+    }
+
+    const reviews: GoogleReview[] = data.reviews.map((r: any) => ({
+      author: r.authorAttribution?.displayName || "Anonymous",
+      avatar: r.authorAttribution?.photoUri || "",
+      rating: r.rating || 5,
+      timeDescription: r.relativePublishTimeDescription || "recently",
+      text: r.text?.text || "",
+    }));
+
+    cachedReviews = reviews;
+    cacheExpiry = now + 24 * 60 * 60 * 1000; // Cache for 24 hours
+
+    return reviews;
+  } catch (error) {
+    console.error("Failed to fetch Google reviews:", error);
+    return cachedReviews || []; // Fallback to cache if available
+  }
+}
+
+// 7. Consolidated fetching function
 export async function getSanityContent(): Promise<PageContent> {
   const [faqs, testimonials, transformations, services, settings] = await Promise.all([
     getFaqs(),
@@ -430,11 +493,14 @@ export async function getSanityContent(): Promise<PageContent> {
     getSiteSettings(),
   ]);
 
+  const googleReviews = await getGoogleReviews();
+
   return {
     faqs,
     testimonials,
     transformations,
     services,
     settings,
+    googleReviews,
   };
 }

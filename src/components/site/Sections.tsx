@@ -975,18 +975,18 @@ export function Reviews({ settings, googleReviews = [] }: { settings?: SiteSetti
               <div className="relative overflow-hidden px-4">
                 <div className="overflow-hidden">
                   <motion.div
-                    className="flex sm:[--card-width:calc((100%-16px)/2)]"
-                    animate={{ x: `calc(-${currentPage} * (var(--card-width, 100%) + ${GAP}px))` }}
+                    className="flex [--card-width:100%] sm:[--card-width:calc((100%-16px)/2)]"
+                    animate={{ x: `calc(-${currentPage} * (var(--card-width) + ${GAP}px))` }}
                     transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-                    style={{ gap: GAP, ...({ "--card-width": "100%" } as any) }}
+                    style={{ gap: GAP }}
                   >
                     {googleReviews.map((r, k) => (
                       <div
                         key={k}
                         className="bg-[#181818] p-5 flex flex-col justify-between shrink-0 border border-white/5 rounded-2xl hover:border-gold/30 transition-colors duration-300 relative"
                         style={{
-                          width: "var(--card-width, 100%)",
-                          minWidth: "var(--card-width, 100%)",
+                          width: "var(--card-width)",
+                          minWidth: "var(--card-width)",
                           minHeight: 200,
                         }}
                       >
